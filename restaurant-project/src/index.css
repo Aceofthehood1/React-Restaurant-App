@@ -67,6 +67,7 @@ body{
 .form label{
   display: block;
   margin: 10px 170px;
+  padding: 5px;
 }
 
 .form input{

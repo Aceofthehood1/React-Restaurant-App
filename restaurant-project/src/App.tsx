@@ -6,7 +6,7 @@ function App() {
     <>
       <h1 id="head">Home Page</h1>
       <div id="home-box">
-        <Link to="/customerSignIn" className="link-box">
+        <Link to="/customerSignUp" className="link-box">
           <img className="home-image" src={customerImg}></img>
           <p className="link-text">Sign in as a customer</p>
         </Link>

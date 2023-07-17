@@ -8,6 +8,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import CustomerRegistrationPage from "./pages/CustomerRegistrationPage"; //Import pages before you can use them
+import CustomerSignUpPage from "./pages/CustomerSignUpPage";
 import CustomerSignInPage from "./pages/CustomerSignInPage";
 
 const router = createBrowserRouter([
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "customerRegister",
     element: <CustomerRegistrationPage></CustomerRegistrationPage>,
+  },
+  {
+    path: "customerSignUp",
+    element: <CustomerSignUpPage></CustomerSignUpPage>,
   },
   {
     path: "customerSignIn",

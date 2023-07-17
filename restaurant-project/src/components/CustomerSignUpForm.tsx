@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
-function CustomerSignInForm() {
+function CustomerSignUpForm() {
   return (
     <>
       <form className="form">
-        <p id="form-head">Sign In</p>
+        <p id="form-head">Register Account</p>
+        <label htmlFor="first-name">
+          First Name
+          <input id="first-name" type="text"></input>
+        </label>
+        <label htmlFor="surname">
+          Surname
+          <input id="surname" type="text"></input>
+        </label>
         <label htmlFor="email-address">
           Email Address
           <input id="email-address" type="email"></input>
@@ -15,12 +23,12 @@ function CustomerSignInForm() {
         <button className="btn btn-three">
           <span>Sign Up</span>
         </button>
-        <Link id="form-link" to="/customerSignUp">
-          Dont have an account? Click here to sign up
+        <Link id="form-link" to="/customerSignIn">
+          Already have an Account? Click here to sign in
         </Link>
       </form>
     </>
   );
 }
 
-export default CustomerSignInForm;
+export default CustomerSignUpForm;
