@@ -7,7 +7,8 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import CustomerRegistrationPage from "./pages/CustomerRegistrationPage";
+import CustomerRegistrationPage from "./pages/CustomerRegistrationPage"; //Import pages before you can use them
+import CustomerSignInPage from "./pages/CustomerSignInPage";
 
 const router = createBrowserRouter([
   // Part of routing code
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "customerRegister",
     element: <CustomerRegistrationPage></CustomerRegistrationPage>,
+  },
+  {
+    path: "customerSignIn",
+    element: <CustomerSignInPage></CustomerSignInPage>,
   },
 ]);
 
