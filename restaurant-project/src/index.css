@@ -1,12 +1,18 @@
+:root{
+  --project-blue: rgb(63, 63, 240);
+  --project-grey: rgb(197, 195, 195);
+  --project-red: rgb(214, 21, 21);
+}
+
 body{
-  background-color: rgb(197, 195, 195);
+  background-color: var(--project-grey);
 }
 #head{
   font-family:Arial, Helvetica, sans-serif;
   text-align: center;
 }
 
-#home-box{
+#home-box{ 
   display:flex;
   width: 900px;
   margin-left: 100px;
@@ -16,7 +22,6 @@ body{
 .link-box{
   width: 400px;
   height: 300px;
-  background-color: rgb(63, 63, 240);
   border-style: solid;
   border-color: black;
   border-width: 2px;
@@ -42,4 +47,88 @@ body{
   transform: translate(-50%, -50%);
   font-size: 40px;
   color: black;
+}
+
+.form{ /*Class that is used for sign up forms*/
+  width: 600px;
+  height: auto;
+  background-color: var(--project-blue);
+  margin-left: 240px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+#form-head{
+  font-size: 30px;
+  text-align: center;
+}
+
+.form label{
+  display: block;
+  margin: 10px 170px;
+  padding: 5px;
+}
+
+.form input{
+  display: block;
+  height: 30px; 
+  width: 250px;
+  border-radius: 5px;
+  border-width: 1px;
+}
+
+.form button{
+  width: 200px;
+  height: 30px;
+  display: block;
+  margin-left: 200px;
+  margin-bottom: 10px;
+  background-color: var(--project-grey);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: all .35s;
+}
+
+.form button span{
+  position: relative;
+  z-index:2;
+}
+/*Button effect start*/
+.form button:after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  text-align: center;
+  height: 100%;
+  border-radius: 6px;
+  background: black;
+  transition: all .35s;
+}
+
+.form button:hover{
+  position: relative;
+  color: White;
+}
+
+.form button:hover:after{
+  width: 100%;
+}
+
+/*Button effect end*/
+
+#form-link{
+  color: black;
+  text-decoration: none;
+  margin-left: 250px;
+  margin-bottom: 20px
+}
+
+#form-link:hover{
+ color: var(--project-red);
 }
