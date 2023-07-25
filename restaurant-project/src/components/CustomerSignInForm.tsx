@@ -5,7 +5,7 @@ function CustomerSignInForm() {
       <form className="form">
         <p id="form-head">Sign In</p>
         <label htmlFor="email-address">
-          Email Address
+          Email
           <input id="email-address" type="email"></input>
         </label>
         <label htmlFor="password">

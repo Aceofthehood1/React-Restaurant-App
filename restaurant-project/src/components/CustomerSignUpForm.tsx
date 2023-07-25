@@ -13,7 +13,7 @@ function CustomerSignUpForm() {
           <input id="surname" type="text"></input>
         </label>
         <label htmlFor="email-address">
-          Email Address
+          Email
           <input id="email-address" type="email"></input>
         </label>
         <label htmlFor="password">
