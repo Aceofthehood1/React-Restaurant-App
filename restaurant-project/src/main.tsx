@@ -7,7 +7,8 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import CustomerRegistrationPage from "./pages/CustomerRegistrationPage"; //Import pages before you can use them
+import RestaurantSignUpPage from "./pages/RestaurantSignUpPage"; //Import pages before you can use them
+import RestaurantSignInPage from "./pages/RestaurantSignInPage"
 import CustomerSignUpPage from "./pages/CustomerSignUpPage";
 import CustomerSignInPage from "./pages/CustomerSignInPage";
 
@@ -18,8 +19,12 @@ const router = createBrowserRouter([
     element: <App></App>,
   },
   {
-    path: "customerRegister",
-    element: <CustomerRegistrationPage></CustomerRegistrationPage>,
+    path: "restaurantSignUp",
+    element: <RestaurantSignUpPage></RestaurantSignUpPage>,
+  },
+  {
+    path: "restaurantSignIn",
+    element: <RestaurantSignInPage></RestaurantSignInPage>,
   },
   {
     path: "customerSignUp",

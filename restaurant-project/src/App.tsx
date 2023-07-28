@@ -11,7 +11,7 @@ function App() {
           <p className="link-text">Sign in as a customer</p>
         </Link>
 
-        <Link to="/customerRegister" className="link-box">
+        <Link to="/restaurantSignUp" className="link-box">
           <img className="home-image" src={restaurantImg}></img>
           <p className="link-text">Sign in as a Restaurant Representative</p>
         </Link>
