@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 function App() {
   return (
     <>
-      <h1 id="head">Home Page</h1>
+      <h1 className= "text-4xl m-2" id="head">Home Page</h1>
       <div id="home-box">
         <Link to="/customerSignUp" className="link-box">
           <img className="home-image" src={customerImg}></img>
-          <p className="link-text">Sign in as a customer</p>
+          <p className="text-center text-3xl">Sign in as a customer</p>
         </Link>
 
         <Link to="/restaurantSignUp" className="link-box">
           <img className="home-image" src={restaurantImg}></img>
-          <p className="link-text">Sign in as a Restaurant Representative</p>
+          <p className="text-center text-3xl" >Sign in as a Restaurant Representative</p>
         </Link>
       </div>
     </>
