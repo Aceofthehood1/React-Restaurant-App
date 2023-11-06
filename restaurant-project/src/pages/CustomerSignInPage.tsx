@@ -13,9 +13,11 @@ function CustomerSignInPage() {
           Password
           <input id="password" type="password"></input>
         </label>
-        <button className="btn btn-three">
-          <span>Sign Up</span>
-        </button>
+          <Link to="/customerHomePage">
+          <button className="btn btn-three">
+            <span>Sign Up</span>
+            </button>
+            </Link>
         <Link id="form-link" to="/customerSignUp">
           Dont have an account? Click here to sign up
         </Link>
