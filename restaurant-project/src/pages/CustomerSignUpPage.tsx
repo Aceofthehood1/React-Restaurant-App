@@ -3,6 +3,7 @@ function CustomerSignUpPage() {
   return (
     <>
     <h1 className="text-4xl m-2" id="head">Customer Sign Up Page</h1>
+    <div className="flex flex-col justify-center items-center w-3/4">
     <form className="form mb-10">
         <p id="form-head">Register Account</p>
         <label htmlFor="first-name">
@@ -28,6 +29,7 @@ function CustomerSignUpPage() {
           Already have an Account? Click here to sign in
         </Link>
       </form>
+    </div>
     </>
   );
 }
