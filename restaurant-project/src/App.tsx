@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <h1 className= "text-4xl m-2" id="head">Home Page</h1>
-      <div id="home-box">
+      <div className="justify-center align-center" id="home-box">
         <Link to="/customerSignUp" className="link-box">
           <img className="home-image" src={customerImg}></img>
           <p className="text-center text-3xl">Sign in as a customer</p>
