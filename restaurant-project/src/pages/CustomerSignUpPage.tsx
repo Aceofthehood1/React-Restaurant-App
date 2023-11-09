@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 function CustomerSignUpPage() {
   return (
     <>
-    <h1 className="text-4xl m-2" id="head">Customer Sign Up Page</h1>
-    <div className="flex flex-col justify-center items-center w-3/4">
+    <h1 className="text-4xl m-2 text-center">Customer Sign Up Page</h1>
+    <div className="flex flex-col justify-center items-center mt-10">
     <form className="form mb-10">
         <p id="form-head">Register Account</p>
         <label htmlFor="first-name">
@@ -30,6 +30,7 @@ function CustomerSignUpPage() {
         </Link>
       </form>
     </div>
+    
     </>
   );
 }
