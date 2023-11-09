@@ -19,11 +19,10 @@ body{
 
 .link-box{
   width: 400px;
-  height: 300px;
+  height: 350px;
   border-style: solid;
   border-color: black;
   border-width: 2px;
-  margin-left: 30px;
   transition: all .7s ease-in-out;
   text-decoration: none;
 }
@@ -41,7 +40,6 @@ body{
 /* sign in/up forms start*/
 .form{ /*Class that is used for sign up forms*/
   width: 600px;
-  height: auto;
   background-color: var(--project-blue);
   display: flex;
   flex-direction: column;
@@ -182,8 +180,6 @@ li{
   background-color: var(--project-red);
   border-radius: 10px;
   padding: 20px;
-  margin-top: 30px;
-  margin-left: 40px;
   margin-bottom: 20px;
 }
 .card{
@@ -219,20 +215,18 @@ li{
 /*Restaurant card end*/
 
 @media (width<=420px){
+  
   #home-box{
-    margin-left:20px;
-    margin-top: 60px;
-    width: 320px;
     flex-direction: column;
   }
+
   .link-box{
     width: 320px;
     margin-bottom: 100px;
+    margin-right: 0px;
   }
 
   .form{
-    margin-left:40px;
-    margin-top: 80px;
     width: 300px;
   }
   .form label{
@@ -240,7 +234,7 @@ li{
   }
 
   .form input{
-    width: 200px;
+    width: 250px;
   }
 
   .form button{
@@ -298,8 +292,6 @@ li{
 .card-container{
   grid-template-columns: 1fr;
   width: 320px;
-  margin-top: 30px;
-  margin-left: 25px;
   margin-bottom: 20px;
 }
 .card{
@@ -322,30 +314,4 @@ li{
 /*Restaurant card end*/
 }
 
-@media (width > 420px){
-  #home-box{
-  align-items:flex-start;
-  flex-direction: column;
-  margin-left: 140px;
-  }
 
-  .link-box{
-    margin-bottom: 20px;
-  }
-  .form{
-    margin-left: 75px;
-  }
-}
-
-@media (width >= 800px){ /*Regular laptop view*/
-  #home-box{
-    margin-left: 70px;
-    flex-direction: row;
-    margin-top: 40px;
-  }
-  .form{
-    margin-left:240px;
-    margin-top: 40px;
-  }
-
-}

@@ -3,6 +3,7 @@ function RestaurantSignUpPage() {
     return (
       <>
         <h1 className="text-4xl m-2"id="head">Restaurant Registration Page</h1>
+        <div className="flex flex-col justify-center items-center mt-10">
         <form className="form mb-10">
         <p id="form-head">Register Account</p>
         <label htmlFor="restaurant-name">
@@ -28,6 +29,8 @@ function RestaurantSignUpPage() {
           Already have an Account? Click here to sign in
         </Link>
       </form>
+        </div>
+        
       </>
     );
   }
