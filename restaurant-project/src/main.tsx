@@ -12,6 +12,7 @@ import RestaurantSignInPage from "./pages/RestaurantSignInPage";
 import CustomerSignUpPage from "./pages/CustomerSignUpPage";
 import CustomerSignInPage from "./pages/CustomerSignInPage";
 import CustomerHomePage from "./pages/CustomerHomePage";
+import RestaurantPage from "./pages/RestaurantPage";
 
 const router = createBrowserRouter([
   // Part of routing code
@@ -39,11 +40,15 @@ const router = createBrowserRouter([
     path: "customerHomePage",
     element: <CustomerHomePage></CustomerHomePage>,
   },
+  {
+    path: "restaurantPage",
+    element: <RestaurantPage></RestaurantPage>,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-      <RouterProvider router={router} /> {/*Part of routing code*/}
+    <RouterProvider router={router} /> {/*Part of routing code*/}
   </React.StrictMode>
 );
 
