@@ -38,7 +38,7 @@ function NavBar() {
         </button>
       </div>
       <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-end">
-        <div className="flex flex-1 flex-shrink-0 items-center">
+        <div className="flex flex-1 flex-shrink-0 items-center ml-20">
           <p className="text-3xl">Gh Restaurants</p>
         </div>
         <div className="hidden sm:ml-6 sm:block">
