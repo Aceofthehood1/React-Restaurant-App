@@ -7,12 +7,22 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import RestaurantSignUpPage from "./pages/RestaurantSignUpPage"; //Import pages before you can use them
-import RestaurantSignInPage from "./pages/RestaurantSignInPage";
-import CustomerSignUpPage from "./pages/CustomerSignUpPage";
-import CustomerSignInPage from "./pages/CustomerSignInPage";
-import CustomerHomePage from "./pages/CustomerHomePage";
-import RestaurantPage from "./pages/RestaurantPage";
+import RestaurantSignUpPage from "./pages/restaurant-admin-pages/RestaurantSignUpPage"; //Import pages before you can use them
+import RestaurantSignInPage from "./pages/restaurant-admin-pages/RestaurantSignInPage";
+import CustomerSignUpPage from "./pages/customer-pages/CustomerSignUpPage";
+import CustomerSignInPage from "./pages/customer-pages/CustomerSignInPage";
+import CustomerHomePage from "./pages/customer-pages/CustomerHomePage";
+import RestaurantPage from "./pages/customer-pages/RestaurantPage";
+import RestaurantAdminPage from "./pages/restaurant-admin-pages/RestaurantAdminPage";
+import AddNewDishPage from "./pages/restaurant-admin-pages/AddNewDishPage";
+import AddNewCategoryPage from "./pages/restaurant-admin-pages/AddNewCategoryPage";
+import AddNewPromotionPage from "./pages/restaurant-admin-pages/AddNewPromotionPage";
+import DishListPage from "./pages/restaurant-admin-pages/DishListPage";
+import EditDishPage from "./pages/restaurant-admin-pages/EditDishPage";
+import CategoryListPage from "./pages/restaurant-admin-pages/CategoryListPage";
+import PromotionListPage from "./pages/restaurant-admin-pages/PromotionListPage";
+import EditCategoryPage from "./pages/restaurant-admin-pages/EditCategoryPage";
+import EditPromotionPage from "./pages/restaurant-admin-pages/EditPromotionPage";
 
 const router = createBrowserRouter([
   // Part of routing code
@@ -43,6 +53,45 @@ const router = createBrowserRouter([
   {
     path: "restaurantPage",
     element: <RestaurantPage></RestaurantPage>,
+  },
+  {
+    path: "restaurantAdminPage",
+    element: <RestaurantAdminPage></RestaurantAdminPage>,
+  },
+  {
+    path: "addNewDishPage",
+    element: <AddNewDishPage></AddNewDishPage>,
+  },
+  {
+    path: "addNewCategoryPage",
+    element: <AddNewCategoryPage></AddNewCategoryPage>,
+  },
+  {
+    path: "addNewPromotionPage",
+    element: <AddNewPromotionPage></AddNewPromotionPage>,
+  },
+  {
+    path: "dishListPage",
+    element: <DishListPage></DishListPage>,
+  },
+  {
+    path: "editDishPage",
+    element: <EditDishPage></EditDishPage>,
+  },{
+    path: "categoryListPage",
+    element: <CategoryListPage></CategoryListPage>,
+  },
+  {
+    path: "editCategoryPage",
+    element: <EditCategoryPage></EditCategoryPage>,
+  },
+  {
+    path: "promotionListPage",
+    element: <PromotionListPage></PromotionListPage>,
+  },
+  {
+    path: "editPromotionPage",
+    element: <EditPromotionPage></EditPromotionPage>,
   },
 ]);
 

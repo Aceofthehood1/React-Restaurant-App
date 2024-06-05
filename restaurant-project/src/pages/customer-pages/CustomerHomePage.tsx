@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import restaurantImg from "../assets/restaurant-image.jpg";
+import restaurantImg from "../../assets/restaurant-image.jpg";
 function CustomerHomePage() {
   return (
     <>
@@ -47,13 +47,15 @@ function CustomerHomePage() {
               </button>
             </div>
             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-end">
-              <div className="flex flex-1">
-                <p className="text-3xl">Gh Restaurants</p>
+              <div className="flex flex-1 flex-shrink-0 items-center">
+                <p className="ml-[120px] text-3xl sm:ml-0">
+                  Gh Restaurants
+                </p>
               </div>
               <div className="hidden sm:ml-6 sm:block">
-                <div>
+                <div className="flex space-x-4">
                   <button
-                    className=" bg-red-600 text-white rounded-md px-3 py-2 text-sm font-medium"
+                    className=" bg-green-600 text-white rounded-md px-3 py-2 text-lg font-medium"
                     aria-current="page"
                   >
                     Logout
@@ -65,6 +67,7 @@ function CustomerHomePage() {
           </div>
         </div>
       </nav>
+
       <div className="flex flex-col justify-center items-center mt-20">
         <div className="card-container">
           <Link to="/restaurantPage" className="card">
