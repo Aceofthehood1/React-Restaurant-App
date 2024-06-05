@@ -38,20 +38,20 @@ function NavBar() {
         </button>
       </div>
       <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-end">
-        <div className="flex flex-1 flex-shrink-0 items-center ml-20">
-          <p className="text-3xl">Gh Restaurants</p>
+        <div className="flex flex-1 flex-shrink-0 items-center">
+          <p className="ml-[120px] text-3xl sm:ml-0">Gh Restaurants</p>
         </div>
         <div className="hidden sm:ml-6 sm:block">
           <div className="flex space-x-4">
-            <a href="#" className="bg-red-600 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
-            <a href="#" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Menu</a>
-            <a href="#" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Reservations</a>
-            <button className=" bg-green-600 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Logout</button>
+            <Link to="#" className="bg-red-600 text-white rounded-md px-3 py-2 text-lg font-medium" aria-current="page">Home</Link>
+            <Link to="#" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Menu</Link>
+            <Link to="#" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Reservations</Link>
+            <Link to="/customerHomePage" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Other Restaurants</Link>
+            <button className=" bg-green-600 text-white rounded-md px-3 py-2 text-lg font-medium" aria-current="page">Logout</button>
           </div>
         </div>
       </div>
       <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-
       </div>
     </div>
   </div>
