@@ -75,14 +75,14 @@ const router = createBrowserRouter([
     element: <DishListPage></DishListPage>,
   },
   {
-    path: "editDishPage",
+    path: "editDishPage/:id",
     element: <EditDishPage></EditDishPage>,
   },{
     path: "categoryListPage",
     element: <CategoryListPage></CategoryListPage>,
   },
   {
-    path: "editCategoryPage",
+    path: "editCategoryPage/:id",
     element: <EditCategoryPage></EditCategoryPage>,
   },
   {
@@ -90,7 +90,7 @@ const router = createBrowserRouter([
     element: <PromotionListPage></PromotionListPage>,
   },
   {
-    path: "editPromotionPage",
+    path: "editPromotionPage/:id",
     element: <EditPromotionPage></EditPromotionPage>,
   },
 ]);

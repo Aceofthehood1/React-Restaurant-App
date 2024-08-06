@@ -1,7 +1,40 @@
 import { Link } from "react-router-dom";
 import restaurantImg from "../assets/restaurant-image.jpg";
 import SideBar from "../../components/SideBar";
+import axios from "axios";
+import { useState } from "react";
 function AddNewDishPage() {
+
+  const [dish_name, setDishName] = useState<string>();
+  const [dish_image, setDishImage] = useState<string>();
+  const [description, setDescription] = useState<string>();
+  const [category, setCategory] = useState<string>();
+  const [price, setPrice] = useState<number>();
+
+  const Submit = (e: { preventDefault: () => void }) => {
+    if (dish_name && description && dish_image && category && price) {
+      axios
+        .post("http://localhost:3001/createDish", {
+          dish_name,
+          dish_image,
+          description,
+          category,
+          price,
+        })
+        .then((result) => console.log(result))
+        .catch((err) => console.log(err));
+      alert("You have added a dish successfully");
+      setDishName(""); //to make the input fields empty after clicking on add dish button
+      setDescription("");
+      setDishImage("");
+      setCategory("");
+      setPrice(0);
+    } else {
+      e.preventDefault(); //to make button not refresh page when its clicked on
+      alert("Please fill in all details to continue");
+    }
+  };
+  
   return (
     <>
       <h1 className="text-4xl m-5" id="head">
@@ -22,6 +55,8 @@ function AddNewDishPage() {
               type="text"
               placeholder="Enter the Dishes Name"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              onChange={(e) => setDishName(e.target.value)}
+              value = {dish_name}
             />
           </div>
           <div className="mb-4">
@@ -33,27 +68,33 @@ function AddNewDishPage() {
               type="file"
               accept="image/*"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              onChange={(e) => setDishImage(e.target.value)}
+              value = {dish_image}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="message" className="block text-sm font-bold mb-2">
+            <label htmlFor="description" className="block text-sm font-bold mb-2">
               Description
             </label>
             <textarea
-              id="message"
+              id="description"
               placeholder="Describe the dish"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              onChange={(e) => setDescription(e.target.value)}
+              value = {description}
             ></textarea>
           </div>
           <div className="mb-4">
             <label
-              htmlFor="department"
+              htmlFor="category"
               className="block text-sm font-bold mb-2"
             >
               Category
               <select
-                id="department"
+                id="category"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={(e) => setCategory(e.target.value)}
+                value = {category}
               >
                 <option value="">Select Dish Category</option>
                 <option value="sales">Lunch</option>
@@ -72,12 +113,15 @@ function AddNewDishPage() {
               type="number"
               placeholder="Price"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              onChange={(e) => setPrice(parseFloat(e.target.value))}
+              value = {price}
             />
           </div>
           <div>
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
+              onClick={Submit}
             >
               Add Dish
             </button>
