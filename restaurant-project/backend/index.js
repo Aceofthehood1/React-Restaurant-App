@@ -54,9 +54,72 @@ app.get('/getAllPromotions', async(req,res) => {
     .catch(err => res.json(err))
 })
 
+//Representatives
+app.get('/getRepresentative/:id', (req, res) => {
+    const id = req.params.id;
+    RepresentativeModel.find({_id:id})
+    .then(representative => res.json(representative))
+    .catch(err => res.json(err))
+})
+
+app.get('/getAllRepresentatives', async(req,res) => {
+    await RepresentativeModel.find({})
+    .then(representatives => res.json(representatives))
+    .catch(err => res.json(err))
+})
+
+
+//Customers
+app.get('/getCustomer/:id', (req, res) => {
+    const id = req.params.id;
+    CustomerModel.find({_id:id})
+    .then(customer => res.json(customer))
+    .catch(err => res.json(err))
+})
+app.get('/getAllCustomers', async(req,res) => {
+    await CustomerModel.find({})
+    .then(customers => res.json(customers))
+    .catch(err => res.json(err))
+})
+
+//Logins
+//Representatives login
+app.post('/loginRepresentative', (req, res) => {
+    const {email, password} = req.body;
+    RepresentativeModel.findOne({email:email})
+    .then(representative => {
+        if(representative){
+            if(representative.password === password){
+                res.json("Logged in Successfully")
+            }else{
+                res.json("The password is incorrect")
+            }
+        }else{
+            res.json("No record exists")
+        }})
+    .catch(err => res.json(err))
+})
+
+//Customers login
+app.post('/loginCustomer', (req, res) => {
+    const {email, password} = req.body;
+    CustomerModel.findOne({email:email})
+    .then(customer => {
+        if(customer){
+            if(customer.password === password){
+                res.json("Logged in Successfully")
+            }else{
+                res.json("The password is incorrect")
+            }
+        }else{
+            res.json("No record exists")
+        }})
+    .catch(err => res.json(err))
+})
+
 // Create Requests
 
-//Create Custtomers
+//Create Customers
 app.post("/createCustomer",(req,res) => { //Used for Customers Creation
     CustomerModel.create(req.body)
     .then(customers => res.json(customers))
