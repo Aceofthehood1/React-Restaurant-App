@@ -153,7 +153,7 @@ li{
 }
 
 .active{
-  background-color: aqua;
+  background-color: rgb(220 38 38)
 }
 
 .nav-link:hover{

@@ -23,6 +23,7 @@ import CategoryListPage from "./pages/restaurant-admin-pages/CategoryListPage";
 import PromotionListPage from "./pages/restaurant-admin-pages/PromotionListPage";
 import EditCategoryPage from "./pages/restaurant-admin-pages/EditCategoryPage";
 import EditPromotionPage from "./pages/restaurant-admin-pages/EditPromotionPage";
+import RestaurantMenuPage from "./pages/customer-pages/RestaurantMenuPage";
 
 const router = createBrowserRouter([
   // Part of routing code
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
   {
     path: "editPromotionPage/:id",
     element: <EditPromotionPage></EditPromotionPage>,
+  },
+  {
+    path: "restaurantMenuPage",
+    element: <RestaurantMenuPage></RestaurantMenuPage>,
   },
 ]);
 

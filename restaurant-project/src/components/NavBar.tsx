@@ -1,5 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function NavBar() {
+  const navigate = useNavigate()
+  const logOut = (e: { preventDefault: () => any }) => {
+    navigate("/")
+    sessionStorage.removeItem('customer_id');
+  }
+
+  const activePage = window.location.pathname;
   return (
     <>
       {/*<nav className="navbar">
@@ -43,11 +50,11 @@ function NavBar() {
         </div>
         <div className="hidden sm:ml-6 sm:block">
           <div className="flex space-x-4">
-            <Link to="#" className="bg-red-600 text-white rounded-md px-3 py-2 text-lg font-medium" aria-current="page">Home</Link>
-            <Link to="#" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Menu</Link>
-            <Link to="#" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Reservations</Link>
+            <Link to="/restaurantPage" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium" aria-current="page">Home</Link>
+            <Link to="/restaurantMenuPage" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Menu</Link>
+            <Link to="#" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium ">Reservations</Link>
             <Link to="/customerHomePage" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Other Restaurants</Link>
-            <button className=" bg-green-600 text-white rounded-md px-3 py-2 text-lg font-medium" aria-current="page">Logout</button>
+            <button className=" bg-green-600 text-white rounded-md px-3 py-2 text-lg font-medium" aria-current="page" onClick={logOut}>Logout</button>
           </div>
         </div>
       </div>

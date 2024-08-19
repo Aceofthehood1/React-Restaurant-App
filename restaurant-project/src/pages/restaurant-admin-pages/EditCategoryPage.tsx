@@ -42,11 +42,11 @@ function EditCategoryPage() {
       <h1 className="text-4xl m-5" id="head">
         Edit Category
       </h1>
-      <div className="sm:flex relative mb-10 lg:absolute">
+      <div className="flex items-center justify-center relative mb-10 lg:absolute">
         <SideBar></SideBar>
       </div>
 
-      <form className="flex flex-col justify-center items-center">
+      <form className="flex flex-col justify-center items-center mb-10">
         <div className="bg-blue-600 p-6 rounded-md shadow-md">
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-bold mb-2">
