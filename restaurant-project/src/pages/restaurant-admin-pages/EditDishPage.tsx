@@ -5,6 +5,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 function EditDishPage() {
 
+  const [categories, setCategories] = useState<any[]>([]);
+  const rep_id = sessionStorage.getItem('rep_id');
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/getAllCategoriesByRepId/" + rep_id)
+      .then((result) => setCategories(result.data))
+      .catch((err) => console.log(err));
+  }, []);
+
   const {id} = useParams()
   const [dish_name, setDishName] = useState<string>();
   const [dish_image, setDishImage] = useState<string>();
@@ -52,7 +62,7 @@ function EditDishPage() {
       <h1 className="text-4xl m-5" id="head">
         Edit Dish
       </h1>
-      <div className="sm:flex relative mb-10 lg:absolute">
+      <div className="flex items-center justify-center relative mb-10 lg:absolute">
         <SideBar></SideBar>
       </div>
 
@@ -105,10 +115,14 @@ function EditDishPage() {
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option value="">Select Dish Category</option>
-                <option selected value="sales">Lunch</option>
-                <option value="marketing">Dinner</option>
-                <option value="finance">BreakFast</option>
-                <option value="hr">Brunch</option>
+                {categories.map((category) => {
+            return (
+              <>
+                <option value={category._id}>{category.category_name}</option> 
+              </>
+            );
+          })}
+                
               </select>
             </label>
           </div>

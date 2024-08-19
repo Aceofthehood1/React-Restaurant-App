@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 function SideBar() {
+  const logOut = (e: { preventDefault: () => any }) => {
+    sessionStorage.removeItem('rep_id');
+  }
   return (
     <>
         <div className="flex flex-col space-y-2 h-1/2 w-64 bg-blue-800 rounded-md ml-1">
@@ -9,7 +12,7 @@ function SideBar() {
             <Link to="/categoryListPage" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Edit Category</Link>
             <Link to="/addNewPromotionPage" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Add New Promotion</Link>
             <Link to="/promotionListPage" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Edit Promotion</Link>
-            <Link to="/" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Log Out</Link>
+            <Link to="/" className="text-gray-300 hover:bg-red-600 hover:text-white rounded-md px-3 py-2 text-lg font-medium" onClick={logOut}>Log Out</Link>
         </div>
     </>
   );

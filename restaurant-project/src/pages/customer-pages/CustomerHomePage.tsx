@@ -1,6 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import restaurantImg from "../../assets/restaurant-image.jpg";
+import axios from "axios";
+import { useState, useEffect } from "react";
 function CustomerHomePage() {
+  const navigate = useNavigate()
+  const logOut = (e: { preventDefault: () => any }) => {
+    navigate("/")
+    sessionStorage.removeItem('customer_id');
+  }
+
+  const customer_id = sessionStorage.getItem('customer_id')
+  const [customer,setCustomer] = useState<String>();
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/getCustomer/"+ customer_id)
+      .then((result) => {console.log(result.data[0]) //data is being picked as an array value
+        setCustomer(result.data[0].first_name)
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  
   return (
     <>
       <nav className="bg-blue-800">
@@ -57,6 +77,7 @@ function CustomerHomePage() {
                   <button
                     className=" bg-green-600 text-white rounded-md px-3 py-2 text-lg font-medium"
                     aria-current="page"
+                    onClick={logOut}
                   >
                     Logout
                   </button>
@@ -67,6 +88,8 @@ function CustomerHomePage() {
           </div>
         </div>
       </nav>
+
+      <p>Welcome {customer}</p>
 
       <div className="flex flex-col justify-center items-center mt-20">
         <div className="card-container">

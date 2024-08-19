@@ -8,11 +8,13 @@ function AddNewPromotionPage() {
   const [promotion_title, setPromotionTitle] = useState<string>();
   const [promotion_image, setPromotionImage] = useState<string>();
   const [description, setDescription] = useState<string>();
+  const rep_id = sessionStorage.getItem('rep_id');
 
   const Submit = (e: { preventDefault: () => void }) => {
     if (promotion_title && promotion_image && description) {
       axios
         .post("http://localhost:3001/createPromotion", {
+          rep_id,
           promotion_title,
           promotion_image,
           description
@@ -34,11 +36,11 @@ function AddNewPromotionPage() {
       <h1 className="text-4xl m-5" id="head">
         Add New Promotion
       </h1>
-      <div className="sm:flex relative mb-10 lg:absolute">
+      <div className="flex items-center justify-center relative mb-10 lg:absolute">
       <SideBar></SideBar>
     </div>
       
-    <form className="flex flex-col justify-center items-center">
+    <form className="flex flex-col justify-center items-center mb-10">
         <div className="bg-blue-600 p-6 rounded-md shadow-md">
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-bold mb-2">

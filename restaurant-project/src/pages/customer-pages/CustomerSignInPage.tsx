@@ -14,10 +14,11 @@ function CustomerSignInPage() {
         .post("http://localhost:3001/loginCustomer", { email, password })
         .then((result) => {
           console.log(result);
-          if (result.data == "Logged in Successfully") {
+          if(result.data[0] == "Logged in Successfully") {
             //from backend the result value is taken and checked to see if user was able to login successfully if it was possible they are redirected to a different page
+            sessionStorage.setItem('customer_id',result.data[1])  //Creates session storage and sets value to representatives id
             navigate("/customerHomePage");
-          } else if(result.data == "The password is incorrect"){
+          }else if(result.data == "The password is incorrect"){
             alert("The password is incorrect")
           }else {
             alert("Email does not exist");

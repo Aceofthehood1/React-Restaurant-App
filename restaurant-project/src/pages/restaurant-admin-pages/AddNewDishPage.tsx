@@ -2,8 +2,18 @@ import { Link } from "react-router-dom";
 import restaurantImg from "../assets/restaurant-image.jpg";
 import SideBar from "../../components/SideBar";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 function AddNewDishPage() {
+
+  const [categories, setCategories] = useState<any[]>([]);
+  const rep_id = sessionStorage.getItem('rep_id');
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/getAllCategoriesByRepId/" + rep_id )
+      .then((result) => setCategories(result.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   const [dish_name, setDishName] = useState<string>();
   const [dish_image, setDishImage] = useState<string>();
@@ -15,6 +25,7 @@ function AddNewDishPage() {
     if (dish_name && description && dish_image && category && price) {
       axios
         .post("http://localhost:3001/createDish", {
+          rep_id,
           dish_name,
           dish_image,
           description,
@@ -40,7 +51,7 @@ function AddNewDishPage() {
       <h1 className="text-4xl m-5" id="head">
         Add New Dish
       </h1>
-      <div className="sm:flex relative mb-10 lg:absolute">
+      <div className="flex relative mb-10 items center justify-center lg:absolute">
         <SideBar></SideBar>
       </div>
 
@@ -97,10 +108,13 @@ function AddNewDishPage() {
                 value = {category}
               >
                 <option value="">Select Dish Category</option>
-                <option value="sales">Lunch</option>
-                <option value="marketing">Dinner</option>
-                <option value="finance">BreakFast</option>
-                <option value="hr">Brunch</option>
+                {categories.map((category) => {
+            return (
+              <>
+                <option value={category._id}>{category.category_name}</option> 
+              </>
+            );
+          })}
               </select>
             </label>
           </div>

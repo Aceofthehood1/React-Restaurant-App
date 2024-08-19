@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 function DishListPage() {
   const [dishes, setDishes] = useState<any[]>([]);
-
+  const rep_id = sessionStorage.getItem('rep_id');
   useEffect(() => {
     axios
-      .get("http://localhost:3001/getAllDishes")
+      .get("http://localhost:3001/getAllDishesByRepId/" + rep_id)
       .then((result) => setDishes(result.data))
       .catch((err) => console.log(err));
   }, []);
@@ -27,21 +27,21 @@ function DishListPage() {
       <h1 className="text-4xl m-5" id="head">
         List Of Dishes
       </h1>
-      <div className="sm:flex relative mb-10 lg:absolute">
+      <div className="flex items-center justify-center relative mb-10 lg:absolute">
         <SideBar></SideBar>
       </div>
 
       <div className="flex flex-col items-center justify-center mb-5">
-        <div className="bg-blue-600 p-6 rounded-md shadow-md">
+        <div className="bg-blue-600 p-6 rounded-md shadow-md w-[400px] lg:w-[520px]">
           {dishes.map((dish) => {
             return (
               <>
                 <div className="rounded flex flex-row items-center mb-5">
                   <p className="mr-5 text-white w-72">{dish.dish_name}</p>
-                  <div>
+                  <div className="md:flex flex col">
                     <Link to={`/editDishPage/${dish._id}`}>
                       <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-5"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-5 lg:mr-5"
                         type="button"
                       >
                         Edit

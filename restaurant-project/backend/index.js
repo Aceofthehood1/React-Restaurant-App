@@ -12,7 +12,6 @@ app.use(cors());
 app.use(express.json());
 
 mongoose.connect("mongodb+srv://gameble01:Xlr8hgyk@restaurants.zuescvh.mongodb.net/Restaurants?retryWrites=true&w=majority&appName=Restaurants")
-
 //Find Requests
 
 //Dishes
@@ -24,6 +23,12 @@ app.get('/getDish/:id', (req, res) => {
 })
 app.get('/getAllDishes', async(req,res) => {
     await DishModel.find({})
+    .then(dishes => res.json(dishes))
+    .catch(err => res.json(err))
+})
+app.get('/getAllDishesByRepId/:rep_id', async(req,res) => { //getting all dishes based on the rep_id
+    const rep_id = req.params.rep_id  //use field name here example category_name
+    await DishModel.find({rep_id})
     .then(dishes => res.json(dishes))
     .catch(err => res.json(err))
 })
@@ -40,6 +45,12 @@ app.get('/getAllCategories', async(req,res) => {
     .then(categories => res.json(categories))
     .catch(err => res.json(err))
 })
+app.get('/getAllCategoriesByRepId/:rep_id', async(req,res) => { //getting all categories based on the rep_id
+    const rep_id = req.params.rep_id  //use field name here example category_name
+    await CategoryModel.find({rep_id})
+    .then(categories => res.json(categories))
+    .catch(err => res.json(err))
+})
 
 //Promotions
 app.get('/getPromotion/:id', (req, res) => {
@@ -50,6 +61,12 @@ app.get('/getPromotion/:id', (req, res) => {
 })
 app.get('/getAllPromotions', async(req,res) => {
     await PromotionModel.find({})
+    .then(promotions => res.json(promotions))
+    .catch(err => res.json(err))
+})
+app.get('/getAllPromotionsByRepId/:rep_id', async(req,res) => { //getting all promotions based on the rep_id
+    const rep_id = req.params.rep_id  //use field name here example category_name
+    await PromotionModel.find({rep_id})
     .then(promotions => res.json(promotions))
     .catch(err => res.json(err))
 })
@@ -90,7 +107,7 @@ app.post('/loginRepresentative', (req, res) => {
     .then(representative => {
         if(representative){
             if(representative.password === password){
-                res.json("Logged in Successfully")
+                res.json(["Logged in Successfully",representative._id])
             }else{
                 res.json("The password is incorrect")
             }
@@ -107,7 +124,7 @@ app.post('/loginCustomer', (req, res) => {
     .then(customer => {
         if(customer){
             if(customer.password === password){
-                res.json("Logged in Successfully")
+                res.json(["Logged in Successfully",customer._id])
             }else{
                 res.json("The password is incorrect")
             }

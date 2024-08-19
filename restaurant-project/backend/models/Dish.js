@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const DishesSchema = new mongoose.Schema({
+    rep_id: String,
     dish_name: String,
     dish_image: String,
     description: String,
