@@ -9,7 +9,6 @@
 }
 
 body{
-  background-color: var(--project-grey);
   margin: 0;
 }
 #head{
@@ -18,11 +17,12 @@ body{
 }
 
 .link-box{
-  width: 400px;
-  height: 350px;
+  width: 550px;
+  height: 420px;
   border-style: solid;
   border-color: black;
   border-width: 2px;
+  border-radius: 10px;
   transition: all .7s ease-in-out;
   text-decoration: none;
 }
@@ -39,7 +39,7 @@ body{
 
 /* sign in/up forms start*/
 .form{ /*Class that is used for sign up forms*/
-  width: 600px;
+  width: 400px;
   background-color: var(--project-blue);
   display: flex;
   flex-direction: column;
@@ -49,30 +49,32 @@ body{
 }
 
 #form-head{
-  font-size: 45px;
+  font-size: 25px;
   text-align: center;
 }
 
 .form label{
   display: block;
-  margin: 10px 170px;
+  margin: 0px 170px;
   padding: 5px;
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .form input{
   display: block;
-  height: 50px; 
+  height: 35px; 
   width: 350px;
   border-radius: 5px;
   border-width: 1px;
   padding: 10px;
+  font-size: 15px
 }
 
 .form button{
-  width: 200px;
-  height: 40px;
+  width: 150px;
+  height: 30px;
   display: block;
+  margin-top: 10px;
   margin-bottom: 10px;
   background-color: var(--project-grey);
   border-width: 1px;
@@ -86,6 +88,7 @@ body{
 .form button span{
   position: relative;
   z-index:2;
+  font-size: 15px;
 }
 /*Button effect start*/
 .form button:after{
@@ -112,11 +115,58 @@ body{
 
 /*Button effect end*/
 
+.special-button{
+  width: 200px;
+  height: 30px;
+  margin-left: 55px;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: var(--project-grey);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: all .35s;
+}
+
+.special-button span{
+  position: relative;
+  z-index:2;
+}
+/*Button effect start*/
+.special-button:after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  text-align: center;
+  height: 100%;
+  border-radius: 6px;
+  background: black;
+  transition: all .35s;
+}
+
+.special-button:hover{
+  position: relative;
+  color: White;
+}
+
+.special-button:hover:after{
+  width: 100%;
+}
+
+/*Button effect end*/
+
+
 #form-link{
   color: black;
   text-decoration: none;
-  margin-left: 250px;
-  margin-bottom: 20px
+  
+  margin-bottom: 20px;
+  font-size: 15px;
 }
 
 #form-link:hover{
@@ -221,8 +271,13 @@ li{
     flex-direction: column;
   }
 
+  #head{
+    font-size: 38px;
+  }
+
   .link-box{
-    width: 320px;
+    width: 350px;
+    height: 300px;
     margin-bottom: 100px;
     margin-right: 0px;
   }

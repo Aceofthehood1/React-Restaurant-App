@@ -39,17 +39,12 @@ function EditCategoryPage() {
   
   return (
     <>
-      <h1 className="text-4xl m-5" id="head">
-        Edit Category
-      </h1>
-      <div className="flex items-center justify-center relative mb-10 lg:absolute">
         <SideBar></SideBar>
-      </div>
 
-      <form className="flex flex-col justify-center items-center mb-10">
+      <form className="flex flex-col justify-center items-center mb-10 mt-20">
         <div className="bg-blue-600 p-6 rounded-md shadow-md">
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-bold mb-2">
+            <label htmlFor="name" className="block text-lg font-bold mb-2">
               Category Name
             </label>
             <input
@@ -61,7 +56,7 @@ function EditCategoryPage() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="image" className="block text-sm font-bold mb-2">
+            <label htmlFor="image" className="block text-lg font-bold mb-2">
               Upload Image Of Category
             </label>
             <input
@@ -74,11 +69,11 @@ function EditCategoryPage() {
           
           <div>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="special-button"
               type="button"
               onClick={Update}
             >
-              Save
+              <span>Save</span>
             </button>
           </div>
         </div>
