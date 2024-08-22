@@ -1,12 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const multer = require('multer')
+
+//Models
 const CustomerModel = require('./models/Customers');
 const RepresentativeModel = require('./models/Representatives');
 const DishModel = require('./models/Dish');
 const CategoryModel = require('./models/Category');
 const PromotionModel = require('./models/Promotion');
 
+//Image Variables
+const storage = multer.memoryStorage()
+const upload = multer({ storage }) 
+
+//calling server variables
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -169,6 +177,20 @@ app.post("/createPromotion",(req,res) => { //Used for Restaurant Promotions
     PromotionModel.create(req.body)
     .then(promotions => res.json(promotions))
     .catch(err => res.json(err))
+})
+
+//Add Image
+app.post("/api/upload", upload.single("image"), async (req, res) => {
+    const newImage = new Image({
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+    })
+    try{
+        await newImage.save()
+        res.status(201).send("Image uploaded successfully")
+    }catch{
+        res.status(500).send("Error uploading Image")
+    }
 })
 
 

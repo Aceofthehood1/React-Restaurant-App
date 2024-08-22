@@ -31,8 +31,6 @@ function CustomerSignInPage() {
     }}
   return (
     <>
-      <h1 className="text-5xl text-center">Customer Sign In Page</h1>
-
       <Link id="form-link" to="/">
         <h2 className="text-3xl text-center">Go to Homepage</h2>
       </Link>

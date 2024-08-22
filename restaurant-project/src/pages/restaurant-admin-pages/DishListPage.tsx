@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import SideBar from "../../components/SideBar";
 import { useEffect, useState } from "react";
+import { faTrash} from "@fortawesome/free-solid-svg-icons";
+import { faEdit} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function DishListPage() {
   const [dishes, setDishes] = useState<any[]>([]);
   const rep_id = sessionStorage.getItem('rep_id');
@@ -24,35 +27,29 @@ function DishListPage() {
 
   return (
     <>
-      <h1 className="text-4xl m-5" id="head">
-        List Of Dishes
-      </h1>
-      <div className="flex items-center justify-center relative mb-10 lg:absolute">
-        <SideBar></SideBar>
-      </div>
+    <SideBar></SideBar>
 
-      <div className="flex flex-col items-center justify-center mb-5">
+      <div className="flex flex-col items-center justify-center mb-5 mt-20">
         <div className="bg-blue-600 p-6 rounded-md shadow-md w-[400px] lg:w-[520px]">
           {dishes.map((dish) => {
             return (
               <>
                 <div className="rounded flex flex-row items-center mb-5">
-                  <p className="mr-5 text-white w-72">{dish.dish_name}</p>
+                  <p className="mr-5 text-lg font-bold w-72">{dish.dish_name}</p>
                   <div className="md:flex flex col">
                     <Link to={`/editDishPage/${dish._id}`}>
                       <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-5 lg:mr-5"
+                        className="w-[100px] bg-blue-500 hover:bg-black hover:text-blue-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-5 lg:mr-5"
                         type="button"
-                      >
-                        Edit
+                      ><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> Edit
                       </button>
                     </Link>
                     <button
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      className="w-[100px] bg-red-600 text-white hover:text-red-600 hover:bg-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                       type="button"
                       onClick={(e) => handleDelete(dish._id)}
                     >
-                      Delete
+                      <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete
                     </button>
                   </div>
                 </div>
