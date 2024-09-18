@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function App() {
   return (
     <>
-      <h1 className= "text-5xl m-2" id="head">Home</h1>
+      <h1 className= "text-5xl p-2" id="head">Home</h1>
       <div className="flex flex-row justify-center items-center mt-10 mb-20" id="home-box">
       <Link to="/customerSignUp" className="link-box mr-10 transition duration-300 hover:-translate-y-4">
           <img className="home-image rounded-[7.5px]" src={customerImg}></img>

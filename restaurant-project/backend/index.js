@@ -9,6 +9,7 @@ const RepresentativeModel = require('./models/Representatives');
 const DishModel = require('./models/Dish');
 const CategoryModel = require('./models/Category');
 const PromotionModel = require('./models/Promotion');
+const Image = require('./models/Image');
 
 //Image Variables
 const storage = multer.memoryStorage()
@@ -180,19 +181,27 @@ app.post("/createPromotion",(req,res) => { //Used for Restaurant Promotions
 })
 
 //Add Image
-app.post("/api/upload", upload.single("image"), async (req, res) => {
+
+app.post('/api/upload', upload.single('image'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    console.log('File received:', req.file); // Log the received file
+
     const newImage = new Image({
         data: req.file.buffer,
         contentType: req.file.mimetype,
-    })
-    try{
-        await newImage.save()
-        res.status(201).send("Image uploaded successfully")
-    }catch{
-        res.status(500).send("Error uploading Image")
-    }
-})
+    });
 
+    try {
+        await newImage.save();
+        res.status(201).send('Image uploaded successfully');
+    } catch (error) {
+        console.error('Error saving image to MongoDB:', error); // Log the error
+        res.status(500).send('Error uploading image');
+    }
+});
 
 //DELETE REQUESTS
 

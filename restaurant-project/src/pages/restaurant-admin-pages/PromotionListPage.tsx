@@ -29,39 +29,50 @@ function PromotionListPage() {
   return (
     <>
         <SideBar></SideBar>
-
       <div className="flex flex-col items-center justify-center mb-5 mt-20">
-      <div className="bg-blue-600 p-6 rounded-md shadow-md w-[400px] lg:w-[520px]">
-          {promotions.map((promotion) => {
-            return (
-              <>
-                <div className="rounded flex flex-row items-center mb-5">
-                  <p className="mr-5 text-lg font-bold w-72">
-                    {promotion.promotion_title}
+          <div className="overflow-x-auto bg-project-green rounded-lg">
+            <table className="divide-y-2 divide-cream border-1 text-sm">
+              <thead className="">
+                <tr>
+                  <p className="whitespace-nowrap px-4 py-2 font-medium text-cream text-lg lg:w-[500px]">
+                    Category Name
                   </p>
-                  <div className="md:flex flex col">
-                    <Link to={`/editPromotionPage/${promotion._id}`}>
-                      <button
-                       className="w-[100px] bg-blue-500 hover:bg-black hover:text-blue-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-5 lg:mr-5"
-                      type="button"
-                      >
-                        <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> Edit
-                      </button>
-                    </Link>
-                    <button
-                    className="w-[100px] bg-red-600 text-white hover:text-red-600 hover:bg-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                      type="button"
-                      onClick={(e) => handleDelete(promotion._id)}
-                    >
-                      <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete
-                    </button>
-                  </div>
-                </div>
-              </>
-            );
-          })}
+                </tr>
+              </thead>
+              {promotions.map((promotion) => {
+                return (
+                  <>
+                    <tbody className="divide-y divide-black">
+                      <tr>
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-cream">
+                          {promotion.promotion_title}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2">
+                          <Link
+                            to={`/editPromotionPage/${promotion._id}`}
+                            className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs border-2 border-cream font-medium bg-cream text-black hover:bg-project-green hover:text-cream"
+                          >
+                            <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>{" "}
+                            Edit
+                          </Link>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2">
+                          <button
+                            className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs border-2 border-cream font-medium bg-cream text-black hover:bg-project-green hover:text-cream"
+                            onClick={(e) => handleDelete(promotion._id)}
+                          >
+                            <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>{" "}
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </>
+                );
+              })}
+            </table>
+          </div>
         </div>
-      </div>
     </>
   );
 }
