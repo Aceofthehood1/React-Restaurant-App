@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import restaurantImg from "../assets/restaurant-image.jpg";
 import SideBar from "../../components/SideBar";
 import axios from "axios";
+import dishImg from "../../assets/dish.jpg";
 import { useEffect, useState } from "react";
 function AddNewDishPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const rep_id = sessionStorage.getItem("rep_id");
-
 
   useEffect(() => {
     axios
@@ -20,10 +20,9 @@ function AddNewDishPage() {
   const [description, setDescription] = useState<string>();
   const [category, setCategory] = useState<string>();
   const [price, setPrice] = useState<number>();
-  
 
   const Submit = (e: { preventDefault: () => void }) => {
-    if (dish_name && description && dish_image && category && price) {
+    if (dish_name && description && category && price) {
       axios
         .post("http://localhost:3001/createDish", {
           rep_id,
@@ -50,92 +49,146 @@ function AddNewDishPage() {
   return (
     <>
       <SideBar></SideBar>
-    
-      <form className="flex flex-col justify-center items-center mb-5 mt-20">
-        <div className="bg-blue-600 p-6 rounded-md shadow-md">
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-lg font-bold mb-2">
-              Dish Name
-            </label>
-            <input
-              id="dish-name"
-              type="text"
-              placeholder="Enter the Dishes Name"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => setDishName(e.target.value)}
-              value={dish_name}
+      {/*
+  Heads up! 👋
+
+  Plugins:
+    - @tailwindcss/forms
+*/}
+
+      <section className="cream">
+        <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
+          <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
+            <img
+              alt=""
+              src={dishImg}
+              className="absolute inset-0 h-full w-full object-cover"
             />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="image" className="block text-lg font-bold mb-2">
-              Upload Image Of Dish
-            </label>
-            <input
-              id="dish-image"
-              type="file"
-              accept="image/*"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => setDishImage(e.target.value)}
-              value={dish_image}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="description"
-              className="block text-lg font-bold mb-2"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              placeholder="Describe the dish"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => setDescription(e.target.value)}
-              value={description}
-            ></textarea>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="category" className="block text-lg font-bold mb-2">
-              Category
-            </label>
-            <select
-              id="category"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => setCategory(e.target.value)}
-              value={category}
-            >
-              <option value="">Select Dish Category</option>
-              {categories.map((category) => {
-                return (
-                  <>
-                    <option value={category._id}>
-                      {category.category_name}
-                    </option>
-                  </>
-                );
-              })}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-lg font-bold mb-2">
-              Price
-            </label>
-            <input
-              id="price"
-              type="number"
-              placeholder="Price"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => setPrice(parseFloat(e.target.value))}
-              value={price}
-            />
-          </div>
-          <div>
-            <button className="special-button" type="button" onClick={Submit}>
-              <span>Add Dish</span>
-            </button>
-          </div>
+          </aside>
+
+          <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
+            <div className="max-w-xl lg:max-w-3xl">
+              <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+                Add a new dish
+              </h1>
+
+              <p className="mt-4 leading-relaxed text-gray-500">
+                Here, you add the dishes you want your customers to be able to
+                view on the customer page. Make sure to not leave any fields
+                empty!
+              </p>
+
+              <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+                <div className="col-span-6">
+                  <label
+                    htmlFor="dish_name"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Name of Dish
+                  </label>
+                  <input
+                    id="dish-name"
+                    type="text"
+                    placeholder="Enter the Dishes Name"
+                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
+                    onChange={(e) => setDishName(e.target.value)}
+                    value={dish_name}
+                  />
+                </div>
+
+                <div className="col-span-6">
+                  <label
+                    htmlFor="dish_name"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Dish Description
+                  </label>
+                  <textarea
+                    id="description"
+                    placeholder="Describe the dish"
+                    className="mt-1 w-full h-[100px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
+                    onChange={(e) => setDescription(e.target.value)}
+                    value={description}
+                  ></textarea>
+                </div>
+
+                <div className="col-span-6">
+                  <label
+                    htmlFor="dish_image"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    {" "}
+                    Upload Image of Dish{" "}
+                  </label>
+                  <input
+                    id="dish-image"
+                    type="file"
+                    accept="image/*"
+                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
+                    onChange={(e) => setDishImage(e.target.value)}
+                    value={dish_image}
+                  />
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    {" "}
+                    Category{" "}
+                  </label>
+
+                  <select
+                    id="category"
+                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
+                    onChange={(e) => setCategory(e.target.value)}
+                    value={category}
+                  >
+                    <option value="">Select Dish Category</option>
+                    {categories.map((category) => {
+                      return (
+                        <>
+                          <option value={category._id}>
+                            {category.category_name}
+                          </option>
+                        </>
+                      );
+                    })}
+                  </select>
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="price"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Price
+                  </label>
+
+                  <input
+                    id="price"
+                    type="number"
+                    placeholder="Price"
+                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
+                    onChange={(e) => setPrice(parseFloat(e.target.value))}
+                    value={price}
+                  />
+                </div>
+
+                <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
+                  <button
+                    className="text-cream inline-block shrink-0 rounded-md border green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
+                    onClick={Submit}
+                  >
+                    Add Dish
+                  </button>
+                </div>
+              </form>
+            </div>
+          </main>
         </div>
-      </form>
+      </section>
     </>
   );
 }

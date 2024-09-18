@@ -3,17 +3,42 @@
 @tailwind utilities;
 
 :root{
-  --project-blue: rgb(63, 63, 240);
-  --project-grey: rgb(197, 195, 195);
-  --project-red: rgb(214, 21, 21);
+  --project-blue: rgb(0, 78, 187);
+  --project-indigo: rgb(147, 129, 255);
+  --project-cream: rgb(237,238,192);
+  --project-green: rgb(12,124,89);
+  --project-light-b: rgb(99,176,205);
 }
 
-body{
+html, body{
   margin: 0;
+  height: 100%;
+  background-color: var(--project-cream);
 }
+
 #head{
   font-family:Arial, Helvetica, sans-serif;
   text-align: center;
+}
+
+.blue{
+  background-color: var(--project-blue);
+}
+.l-blue{
+  background-color: var(--project-light-b);
+}
+.cream{
+  background-color: var(--project-cream);
+}
+.green{
+  background-color: var(--project-green);
+}
+.indigo{
+  background-color: var(--project-indigo);
+}
+
+.border-cream{
+  border-color: var(--project-cream);
 }
 
 .link-box{
@@ -177,7 +202,8 @@ body{
 
 /*Navigation Bar css start*/
 .navbar{
-  background-color: var(--project-blue);
+  background-color: var(--project-green);
+  /*background-color:  var(--project-grey);*/
 }
 ul{
   list-style-type:none;

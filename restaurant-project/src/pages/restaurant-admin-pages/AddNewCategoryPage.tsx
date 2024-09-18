@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import restaurantImg from "../assets/restaurant-image.jpg";
+import menuImg from "../../assets/menu.png";
 import SideBar from "../../components/SideBar";
 import axios from "axios";
 import { useState } from "react";
@@ -10,7 +10,7 @@ function AddNewCategoryPage() {
   const rep_id = sessionStorage.getItem("rep_id");
 
   const Submit = (e: { preventDefault: () => void }) => {
-    if (category_name && category_image) {
+    if (category_name) {
       axios
         .post("http://localhost:3001/createCategory", {
           rep_id,
@@ -32,46 +32,72 @@ function AddNewCategoryPage() {
     <>
       <SideBar></SideBar>
 
-      <form className="flex flex-col justify-center items-center mb-10 mt-20">
-        <div className="bg-blue-600 p-6 rounded-md shadow-md">
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-lg font-bold mb-2">
-              Category Name
+  <section className="bg-cream">
+  <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
+    <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
+      <img
+        alt=""
+        src={menuImg}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    </aside>
+
+    <main
+      className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
+    >
+      <div className="max-w-xl lg:max-w-3xl">
+        
+
+        <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+          Add a new dish Category
+        </h1>
+
+        <p className="mt-4 leading-relaxed text-gray-500">
+          Here, you add the categories you want your customers to be able to view on the customer page. These categories will be attached to any dish you add. Make sure to not leave any fields empty!
+        </p>
+
+        <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+          <div className="col-span-6">
+            <label htmlFor="dish_name" className="block text-sm font-medium text-gray-700">
+              Name of Category
             </label>
             <input
               id="category-name"
               type="text"
-              placeholder="Enter the Category Name"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Enter the Categories Name"
+              className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
               onChange={(e) => setCategoryName(e.target.value)}
               value={category_name}
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="image" className="block text-lg font-bold mb-2">
-              Upload Image Of Category
-            </label>
+
+          <div className="col-span-6">
+            <label htmlFor="dish_image" className="block text-sm font-medium text-gray-700"> Upload Image of Category </label>
             <input
               id="category-image"
               type="file"
               accept="image/*"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
               onChange={(e) => setCategoryImage(e.target.value)}
               value={category_image}
             />
+            
           </div>
 
-          <div>
+          <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
             <button
+              className="text-cream inline-block shrink-0 rounded-md border bg-project-green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
               onClick={Submit}
-              className="special-button"
-              type="button"
             >
-              <span>Add Category</span>
+              Add Category
             </button>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
+    </main>
+  </div>
+</section>
+
     </>
   );
 }
