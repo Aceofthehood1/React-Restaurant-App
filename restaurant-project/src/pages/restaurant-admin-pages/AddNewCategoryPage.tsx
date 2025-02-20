@@ -9,6 +9,34 @@ function AddNewCategoryPage() {
   const [category_image, setCategoryImage] = useState<string>();
   const rep_id = sessionStorage.getItem("rep_id");
 
+   //Image related
+   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+   const [imagePath, setImagePath] = useState<string>();
+
+   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+  const onFileUpload = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+      setCategoryImage(imagePath);
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/upload",
+          formData
+        );
+        setImagePath(response.data.filePath);
+        setCategoryImage(response.data.filePath)
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    }
+  };
+
   const Submit = (e: { preventDefault: () => void }) => {
     if (category_name) {
       axios
@@ -78,9 +106,11 @@ function AddNewCategoryPage() {
               type="file"
               accept="image/*"
               className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-              onChange={(e) => setCategoryImage(e.target.value)}
-              value={category_image}
+              onChange={onFileChange}
             />
+            <button 
+                  className="text-cream inline-block shrink-0 mt-2 rounded-md border green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
+                  onClick={onFileUpload}>Save Image</button>
             
           </div>
 

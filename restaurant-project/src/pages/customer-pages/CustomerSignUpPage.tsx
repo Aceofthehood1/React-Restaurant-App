@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios, { Axios } from "axios";
+import { faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import HeaderBar from "../../components/HeaderBar";
 
 function CustomerSignUpPage() {
   
@@ -31,13 +34,11 @@ function CustomerSignUpPage() {
 
   return (
     <>
-      <Link id="form-link" to="/">
-        <h2 className="text-3xl text-center">Go to Homepage</h2>
-      </Link>
+      <HeaderBar></HeaderBar>
 
       <div className="flex flex-col justify-center items-center mt-10">
-        <form className="form mb-10">
-          <p id="form-head">Register Account</p>
+        <form className="form mb-10 text-cream">
+          <p id="form-head" className="my-2">Register Account</p>
           <label htmlFor="first-name">
             First Name
             <input
@@ -45,6 +46,7 @@ function CustomerSignUpPage() {
               type="text"
               placeholder="First Name"
               onChange={(e) => setFirstName(e.target.value)}
+              className="text-black"
             ></input>
           </label>
           <label htmlFor="surname">
@@ -54,6 +56,7 @@ function CustomerSignUpPage() {
               type="text"
               placeholder="Surname"
               onChange={(e) => setSurname(e.target.value)}
+              className="text-black"
             ></input>
           </label>
           <label htmlFor="email-address">
@@ -63,6 +66,7 @@ function CustomerSignUpPage() {
               type="email"
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
+              className="text-black"
             ></input>
           </label>
           <label htmlFor="password">
@@ -72,11 +76,15 @@ function CustomerSignUpPage() {
               type="password"
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
+              className="text-black"
             ></input>
           </label>
-          <button onClick={Submit} className="btn btn-three">
-            <span>Sign Up</span>
-          </button>
+          <button
+                      className="inline-block my-2 rounded bg-indigo-600 px-4 py-2 text-xs border-2 border-cream font-medium bg-cream text-black hover:bg-project-green hover:text-cream"
+                      onClick={Submit}
+                    >
+                      <FontAwesomeIcon icon={faUserPlus}></FontAwesomeIcon> Sign Up
+                    </button>
           <Link id="form-link" to="/customerSignIn">
             Already have an Account? Click here to sign in
           </Link>

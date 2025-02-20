@@ -23,6 +23,10 @@ function EditDishPage() {
   const [price, setPrice] = useState<number>();
   const navigate = useNavigate()
 
+  //Image related
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [imagePath, setImagePath] = useState<string>();
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/getDish/"+ id)
@@ -36,6 +40,30 @@ function EditDishPage() {
       .catch((err) => console.log(err));
   }, []);
 
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+  const onFileUpload = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+      setDishImage(imagePath);
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/upload",
+          formData
+        );
+        setImagePath(response.data.filePath);
+        setDishImage(response.data.filePath)
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    }
+  };
+
   const Update = (e: { preventDefault: () => void }) =>{
     e.preventDefault()
     if (dish_name && description && category && price) {
@@ -43,6 +71,7 @@ function EditDishPage() {
         .put("http://localhost:3001/updateDish/"+id, {
           dish_name,
           description,
+          dish_image,
           category,
           price
         })
@@ -129,9 +158,12 @@ function EditDishPage() {
                     type="file"
                     accept="image/*"
                     className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={(e) => setDishImage(e.target.value)}
-                    value={dish_image}
+                    onChange={onFileChange}
                   />
+                  <img src={`../../../backend/${dish_image}`}></img>
+                  <button 
+                  className="text-cream inline-block shrink-0 mt-2 rounded-md border green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
+                  onClick={onFileUpload}>Save Image</button>
                 </div>
 
                 <div className="col-span-6 sm:col-span-3">
@@ -187,6 +219,7 @@ function EditDishPage() {
                   >
                     Save
                   </button>
+                  <p>{dish_image}</p>
                 </div>
               </form>
             </div>

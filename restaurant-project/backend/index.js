@@ -1,7 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const multer = require('multer')
+const multer = require('multer');
+const bodyparser = require('body-parser');
+const imgSchema = require('./models/Image');
+const fs = require('fs');
+var path = require('path');
 
 //Models
 const CustomerModel = require('./models/Customers');
@@ -11,17 +15,45 @@ const CategoryModel = require('./models/Category');
 const PromotionModel = require('./models/Promotion');
 const Image = require('./models/Image');
 
-//Image Variables
-const storage = multer.memoryStorage()
-const upload = multer({ storage }) 
-
 //calling server variables
 const app = express();
 app.use(cors());
+app.set("view engine", "ejs");
 app.use(express.json());
+require('dotenv').config();
 
 mongoose.connect("mongodb+srv://gameble01:Xlr8hgyk@restaurants.zuescvh.mongodb.net/Restaurants?retryWrites=true&w=majority&appName=Restaurants")
 //Find Requests
+
+// Set storage engine
+const storage = multer.diskStorage({
+    destination: './uploads/',
+    filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, uniqueSuffix + '-' + file.originalname);
+    }
+  });
+  
+  // Init upload
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 1000000 }, // Limit file size to 1MB
+  }).single('image');
+  
+  // Serve static files from the uploads directory
+    app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+  // Route for uploading image
+  app.post('/upload', (req, res) => {
+    upload(req, res, (err) => {
+      if (err) {
+        return res.status(400).send(err);
+      }
+      res.json({ filePath: `uploads/${req.file.filename}` });
+    });
+  });
+
+  //End For Image
 
 //Dishes
 app.get('/getDish/:id', (req, res) => {
@@ -180,29 +212,6 @@ app.post("/createPromotion",(req,res) => { //Used for Restaurant Promotions
     .catch(err => res.json(err))
 })
 
-//Add Image
-
-app.post('/api/upload', upload.single('image'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
-    }
-
-    console.log('File received:', req.file); // Log the received file
-
-    const newImage = new Image({
-        data: req.file.buffer,
-        contentType: req.file.mimetype,
-    });
-
-    try {
-        await newImage.save();
-        res.status(201).send('Image uploaded successfully');
-    } catch (error) {
-        console.error('Error saving image to MongoDB:', error); // Log the error
-        res.status(500).send('Error uploading image');
-    }
-});
-
 //DELETE REQUESTS
 
 // Delete Dish
@@ -234,6 +243,7 @@ app.put("/updateDish/:id", (req,res) => {
     const id = req.params.id
     DishModel.findByIdAndUpdate({_id:id},{
         dish_name: req.body.dish_name,
+        dish_image: req.body.dish_image,
         description: req.body.description,
         category: req.body.category,
         price: req.body.price
@@ -246,7 +256,8 @@ app.put("/updateDish/:id", (req,res) => {
 app.put("/updateCategory/:id", (req,res) => {
     const id = req.params.id
     CategoryModel.findByIdAndUpdate({_id:id},{
-        category_name: req.body.category_name
+        category_name: req.body.category_name,
+        category_image: req.body.category_image
     })
     .then(category => res.json(category))
     .catch(err => res.json(err))
@@ -258,6 +269,7 @@ app.put("/updatePromotion/:id", (req,res) => {
     PromotionModel.findByIdAndUpdate({_id:id},{
         promotion_title: req.body.promotion_title,
         description: req.body.description,
+        promotion_image: req.body.promotion_image
     })
     .then(promotion => res.json(promotion))
     .catch(err => res.json(err))
