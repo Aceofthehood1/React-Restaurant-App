@@ -24,6 +24,7 @@ import PromotionListPage from "./pages/restaurant-admin-pages/PromotionListPage"
 import EditCategoryPage from "./pages/restaurant-admin-pages/EditCategoryPage";
 import EditPromotionPage from "./pages/restaurant-admin-pages/EditPromotionPage";
 import RestaurantMenuPage from "./pages/customer-pages/RestaurantMenuPage";
+import RestaurantDishPage from "./pages/customer-pages/RestaurantDishPage";
 
 const router = createBrowserRouter([
   // Part of routing code
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
     element: <CustomerHomePage></CustomerHomePage>,
   },
   {
-    path: "restaurantPage",
+    path: "restaurantPage/:id",
     element: <RestaurantPage></RestaurantPage>,
   },
   {
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
   {
     path: "restaurantMenuPage",
     element: <RestaurantMenuPage></RestaurantMenuPage>,
+  },
+  {
+    path: "restaurantDishPage",
+    element: <RestaurantDishPage></RestaurantDishPage>,
   },
 ]);
 

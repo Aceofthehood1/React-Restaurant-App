@@ -37,7 +37,7 @@ function CustomerSignUpPage() {
       <HeaderBar></HeaderBar>
 
       <div className="flex flex-col justify-center items-center mt-10">
-        <form className="form mb-10 text-cream">
+        <form className="form text-cream">
           <p id="form-head" className="my-2">Register Account</p>
           <label htmlFor="first-name">
             First Name

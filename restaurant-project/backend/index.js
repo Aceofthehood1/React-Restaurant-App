@@ -73,6 +73,13 @@ app.get('/getAllDishesByRepId/:rep_id', async(req,res) => { //getting all dishes
     .then(dishes => res.json(dishes))
     .catch(err => res.json(err))
 })
+app.get('/getAllDishesByRepIdAndCategoryId/:rep_id/:category', async(req,res) => { //getting all dishes based on the rep_id
+    const rep_id = req.params.rep_id  //use field name here example category_name
+    const category = req.params.category
+    await DishModel.find({rep_id,category})
+    .then(dishes => res.json(dishes))
+    .catch(err => res.json(err))
+})
 
 //Categories
 app.get('/getCategory/:id', (req, res) => { //for a particular category
@@ -89,6 +96,13 @@ app.get('/getAllCategories', async(req,res) => {
 app.get('/getAllCategoriesByRepId/:rep_id', async(req,res) => { //getting all categories based on the rep_id
     const rep_id = req.params.rep_id  //use field name here example category_name
     await CategoryModel.find({rep_id})
+    .then(categories => res.json(categories))
+    .catch(err => res.json(err))
+})
+app.get('/getAllCategoriesByRepIdAndCategoryId/:rep_id/:category_id', async(req,res) => { //getting all categories based on the rep_id
+    const rep_id = req.params.rep_id  //use field name here example category_name
+    const category_id = req.params.category_id
+    await CategoryModel.find({rep_id, category_id})
     .then(categories => res.json(categories))
     .catch(err => res.json(err))
 })
@@ -272,6 +286,20 @@ app.put("/updatePromotion/:id", (req,res) => {
         promotion_image: req.body.promotion_image
     })
     .then(promotion => res.json(promotion))
+    .catch(err => res.json(err))
+})
+
+//Update Representative
+app.put("/updateRepresentative/:id", (req,res) => {
+    const id = req.params.id
+    RepresentativeModel.findByIdAndUpdate({_id:id},{
+        restaurant_name: req.body.restaurant_name,
+        restaurant_image: req.body.restaurant_image,
+        address: req.body.address,
+        email: req.body.email,
+        password: req.body.password,
+    })
+    .then(category => res.json(category))
     .catch(err => res.json(err))
 })
 

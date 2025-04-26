@@ -1,6 +1,6 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCircleUser, faPlus, faUtensils } from "@fortawesome/free-solid-svg-icons";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { faRecycle } from "@fortawesome/free-solid-svg-icons";
 import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
@@ -74,6 +74,15 @@ function SideBar() {
               tabIndex={0}
               className="menu menu-sm dropdown-content blue rounded-box z-[1] mt-3 w-72 p-2 shadow text-cream green"
             >
+              <li>
+                <Link
+                  to="/restaurantAdminPage"
+                  className="rounded-md px-3 py-2 text-lg font-medium"
+                  aria-current="page"
+                >
+                  <FontAwesomeIcon icon={faCircleUser} /> Profile
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/addNewDishPage"

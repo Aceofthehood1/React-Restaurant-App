@@ -190,7 +190,7 @@ li{
 .card-title{
   text-align: center;
   font-size: 25px;
-  color: black;
+  color: var(--project-cream);
   margin-top: 0;
 }
 

@@ -1,12 +1,10 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import { faRecycle } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faKitchenSet, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faUtensils } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
-import { faBowlFood } from "@fortawesome/free-solid-svg-icons";
-import { faList } from "@fortawesome/free-solid-svg-icons";
-import { faRectangleAd } from "@fortawesome/free-solid-svg-icons";
+
 
 function CustomerBar() {
   const location = useLocation();
@@ -17,30 +15,21 @@ function CustomerBar() {
     const { id } = params; // Destructure the id from params
     switch (location.pathname) {
       case "/customerHomePage":
+        return "Restaurants";
+      case `/restaurantPage/${id}`: //Used these quotes so id can be accepted and used
         return "Home";
-      case "/addNewDishPage":
-        return "Add New Dish";
-      case "/addNewCategoryPage":
-        return "Add New Category";
-      case "/addNewPromotionPage":
-        return "Add New Promotion";
-      case "/dishListPage":
-        return "Make changes to List of Dishes";
-      case "/categoryListPage":
-        return "Make changes to List of Categories";
-      case "/promotionListPage":
-        return "Make changes to List of Promotions";
-      case `/editDishPage/${id}`: //Used these quotes so id can be accepted and used
-        return "Edit Dish";
-      case `/editCategoryPage/${id}`: //Used these quotes so id can be accepted and used
-        return "Edit Category";
-      case `/editPromotionPage/${id}`: //Used these quotes so id can be accepted and used
-        return "Edit Promotion";
+      case "/restaurantMenuPage":
+        return "Menu";
+        case "/restaurantMenuPage/":
+          return "Menu";
+        case "/restaurantDishPage":
+        return "Dish";
       default:
         return "Page Not Found";
     }
   };
 
+  const code = sessionStorage.getItem('restaurant_id'); // variable to store restaurant_id so the home button will make user see the restaurant based on id stored
   const logOut = (e: { preventDefault: () => any }) => {
     sessionStorage.removeItem("customer_id");
   };
@@ -48,7 +37,7 @@ function CustomerBar() {
     <>
       <div className="navbar">
         <div className="navbar-start">
-          <details className="dropdown">
+          {location.pathname != "/customerHomePage"? <details className="dropdown">
             <summary
               tabIndex={0}
               role="button"
@@ -74,19 +63,19 @@ function CustomerBar() {
             >
               <li>
                 <Link
-                  to="/addNewDishPage"
+                  to={`/restaurantPage/${code}`}
                   className="rounded-md px-3 py-2 text-lg font-medium"
                   aria-current="page"
                 >
-                  <FontAwesomeIcon icon={faBowlFood} /> Add New Dish
+                  <FontAwesomeIcon icon={faHouse} /> Home
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/dishListPage"
+                  to="/restaurantMenuPage"
                   className="rounded-md px-3 py-2 text-lg font-medium"
                 >
-                  <FontAwesomeIcon icon={faPencil} /> Edit Dish
+                  <FontAwesomeIcon icon={faUtensils} /> Menu
                 </Link>
               </li>
               <li>
@@ -94,37 +83,22 @@ function CustomerBar() {
                   to="/addNewCategoryPage"
                   className="rounded-md px-3 py-2 text-lg font-medium"
                 >
-                  <FontAwesomeIcon icon={faList} /> Add New Category
+                  <FontAwesomeIcon icon={faCalendar} /> Reservations
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/categoryListPage"
+                  to="/customerHomePage"
                   className="rounded-md px-3 py-2 text-lg font-medium"
                 >
                   {" "}
-                  <FontAwesomeIcon icon={faPencil} /> Edit Category
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/addNewPromotionPage"
-                  className="rounded-md px-3 py-2 text-lg font-medium"
-                >
-                  <FontAwesomeIcon icon={faRectangleAd} /> Add New Promotion
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/promotionListPage"
-                  className="rounded-md px-3 py-2 text-lg font-medium"
-                >
-                  {" "}
-                  <FontAwesomeIcon icon={faPencil} /> Edit Promotion
+                  <FontAwesomeIcon icon={faKitchenSet} /> Other Restaurants
                 </Link>
               </li>
             </ul>
-          </details>
+          </details> :""
+          }
+          
         </div>
         <div className="navbar-center">
           <a className="btn btn-ghost text-lg text-cream sm:text-2xl">

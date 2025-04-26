@@ -40,7 +40,7 @@ function RestaurantSignInPage() {
     <>
       <HeaderBar></HeaderBar>
 
-      <div className="flex flex-col justify-center items-center mt-10">
+      <div className="flex flex-col justify-center items-center mt-32">
         <form className="form mb-10 text-cream">
           <p id="form-head" className="my-2">
             Sign In
