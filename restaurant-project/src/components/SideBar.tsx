@@ -1,6 +1,11 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleUser, faPlus, faUtensils } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendar,
+  faCircleUser,
+  faPlus,
+  faUtensils,
+} from "@fortawesome/free-solid-svg-icons";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { faRecycle } from "@fortawesome/free-solid-svg-icons";
 import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
@@ -38,6 +43,8 @@ function SideBar() {
         return "Edit Category";
       case `/editPromotionPage/${id}`: //Used these quotes so id can be accepted and used
         return "Edit Promotion";
+      case "/viewCustomerReservationsPage":
+        return "Customer Reservations";
       default:
         return "Page Not Found";
     }
@@ -132,6 +139,13 @@ function SideBar() {
                 >
                   {" "}
                   <FontAwesomeIcon icon={faPencil} /> Edit Promotion
+                </Link>
+                <Link
+                  to="/viewCustomerReservationsPage"
+                  className="rounded-md px-3 py-2 text-lg font-medium"
+                >
+                  {" "}
+                  <FontAwesomeIcon icon={faCalendar} /> Customer Reservations
                 </Link>
               </li>
             </ul>

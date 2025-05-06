@@ -1,5 +1,7 @@
+import { integer } from "aws-sdk/clients/cloudfront";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function getRepresentativeById(id:any){
     const [restaurant_name, setRestaurantName] = useState<string>();
@@ -49,6 +51,20 @@ export function getCustomerById(id:any){
       .catch((err) => console.log(err));
   }, []);
   return customer;
+}
+
+export function getAllCustomers(){
+  const [customers, setCustomers] = useState<any[]>([])
+  
+  useEffect(() => {
+      axios
+        .get("http://localhost:3001/getAllCustomers")
+        .then((result) => {console.log(result.data[0])
+          setCustomers(result.data)})
+        .catch((err) => console.log(err));
+    }, []);
+
+    return customers;
 }
 
 export function getAllCategories(){
@@ -134,4 +150,37 @@ export function getAllPromotionsByRepId(rep_id:any){
       .catch((err) => console.log(err));
   }, []);
   return promotions
+}
+
+export function getAllReservationsByRepId(rep_id:any){
+  const [reservations, setReservations] = useState<any[]>([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/getAllReservationsByRepId/" + rep_id)
+      .then((result) => setReservations(result.data))
+      .catch((err) => console.log(err));
+  }, []);
+  return reservations
+}
+
+export function getAllReservationsByRepIdAndCustomerId(rep_id:any, customer_id:any){
+  const [reservations, setReservations] = useState<any[]>([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/getAllReservationsByRepIdAndCustomerId/" + rep_id + "/" + customer_id)
+      .then((result) => setReservations(result.data))
+      .catch((err) => console.log(err));
+  }, []);
+  return reservations
+}
+
+export function getAllReservationsByCustomerId(customer_id:any){
+  const [reservations, setReservations] = useState<any[]>([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/getAllReservationsByCustomerId/" + customer_id)
+      .then((result) => setReservations(result.data))
+      .catch((err) => console.log(err));
+  }, []);
+  return reservations
 }

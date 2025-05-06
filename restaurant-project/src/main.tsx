@@ -24,7 +24,9 @@ import PromotionListPage from "./pages/restaurant-admin-pages/PromotionListPage"
 import EditCategoryPage from "./pages/restaurant-admin-pages/EditCategoryPage";
 import EditPromotionPage from "./pages/restaurant-admin-pages/EditPromotionPage";
 import RestaurantMenuPage from "./pages/customer-pages/RestaurantMenuPage";
-import RestaurantDishPage from "./pages/customer-pages/RestaurantDishPage";
+import RestaurantReservationPage from "./pages/customer-pages/RestaurantReservationPage";
+import ViewReservationsPage from "./pages/customer-pages/ViewReservationsPage";
+import ViewCustomerReservationsPage from "./pages/restaurant-admin-pages/ViewCustomerReservationsPage";
 
 const router = createBrowserRouter([
   // Part of routing code
@@ -100,8 +102,16 @@ const router = createBrowserRouter([
     element: <RestaurantMenuPage></RestaurantMenuPage>,
   },
   {
-    path: "restaurantDishPage",
-    element: <RestaurantDishPage></RestaurantDishPage>,
+    path: "restaurantReservationPage",
+    element: <RestaurantReservationPage></RestaurantReservationPage>,
+  },
+  {
+    path: "viewReservationsPage",
+    element: <ViewReservationsPage></ViewReservationsPage>,
+  },
+  {
+    path: "viewCustomerReservationsPage",
+    element: <ViewCustomerReservationsPage></ViewCustomerReservationsPage>,
   },
 ]);
 

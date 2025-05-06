@@ -4,6 +4,8 @@ import { faHouse, faKitchenSet, faPlus } from "@fortawesome/free-solid-svg-icons
 import { faUtensils } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarXmark } from "@fortawesome/free-solid-svg-icons";
+
 
 
 function CustomerBar() {
@@ -20,10 +22,10 @@ function CustomerBar() {
         return "Home";
       case "/restaurantMenuPage":
         return "Menu";
-        case "/restaurantMenuPage/":
-          return "Menu";
-        case "/restaurantDishPage":
-        return "Dish";
+        case "/restaurantReservationPage":
+          return "Reservations";
+        case "/viewReservationsPage":
+        return "Your Reservations";
       default:
         return "Page Not Found";
     }
@@ -80,10 +82,19 @@ function CustomerBar() {
               </li>
               <li>
                 <Link
-                  to="/addNewCategoryPage"
+                  to="/restaurantReservationPage"
                   className="rounded-md px-3 py-2 text-lg font-medium"
                 >
                   <FontAwesomeIcon icon={faCalendar} /> Reservations
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/viewReservationsPage"
+                  className="rounded-md px-3 py-2 text-lg font-medium"
+                >
+                  {" "}
+                  <FontAwesomeIcon icon={faCalendarXmark} /> Your Reservations
                 </Link>
               </li>
               <li>

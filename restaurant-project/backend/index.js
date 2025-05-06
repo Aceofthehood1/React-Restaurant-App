@@ -13,6 +13,7 @@ const RepresentativeModel = require('./models/Representatives');
 const DishModel = require('./models/Dish');
 const CategoryModel = require('./models/Category');
 const PromotionModel = require('./models/Promotion');
+const ReservationModel = require('./models/Reservation')
 const Image = require('./models/Image');
 
 //calling server variables
@@ -154,6 +155,38 @@ app.get('/getAllCustomers', async(req,res) => {
     .catch(err => res.json(err))
 })
 
+//Reservations
+app.get('/getReservation/:id', (req, res) => {
+    const id = req.params.id;
+    ResevationModel.find({_id:id})
+    .then(reservation => res.json(reservation))
+    .catch(err => res.json(err))
+})
+app.get('/getAllReservations', async(req,res) => {
+    await ReservationModel.find({})
+    .then(reservations => res.json(reservations))
+    .catch(err => res.json(err))
+})
+app.get('/getAllReservationsByRepId/:rep_id', async(req,res) => { //getting all reservations based on the rep_id
+    const rep_id = req.params.rep_id  //use field name here example category_name
+    await ReservationModel.find({rep_id})
+    .then(reservations => res.json(reservations))
+    .catch(err => res.json(err))
+})
+app.get('/getAllReservationsByCustomerId/:customer_id', async(req,res) => { //getting all reservations based on the customer_id
+    const customer_id = req.params.customer_id  //use field name here example category_name
+    await ReservationModel.find({customer_id})
+    .then(reservations => res.json(reservations))
+    .catch(err => res.json(err))
+})
+app.get('/getAllReservationsByRepIdAndCustomerId/:rep_id/:customer_id', async(req,res) => { //getting all reservations based on the rep_id
+    const rep_id = req.params.rep_id
+    const customer_id = req.params.customer_id
+    await ReservationModel.find({rep_id, customer_id})
+    .then(reservations => res.json(reservations))
+    .catch(err => res.json(err))
+})
+
 //Logins
 //Representatives login
 app.post('/loginRepresentative', (req, res) => {
@@ -226,6 +259,13 @@ app.post("/createPromotion",(req,res) => { //Used for Restaurant Promotions
     .catch(err => res.json(err))
 })
 
+//Create Reservation
+app.post("/createReservation",(req,res) => { //Used for Restaurant Reservations
+    ReservationModel.create(req.body)
+    .then(reservations => res.json(reservations))
+    .catch(err => res.json(err))
+})
+
 //DELETE REQUESTS
 
 // Delete Dish
@@ -246,6 +286,13 @@ app.delete("/deleteCategory/:id",(req,res) => { //Used for deleting restaurant c
 app.delete("/deletePromotion/:id",(req,res) => { //Used for deleting restaurant promotions
     const id = req.params.id;
     PromotionModel.findByIdAndDelete({_id: id})
+    .then(res => res.json(res))
+    .catch(err => res.json(err))
+})
+
+app.delete("/deleteReservation/:id",(req,res) => { //Used for deleting restaurant reservations
+    const id = req.params.id;
+    ReservationModel.findByIdAndDelete({_id: id})
     .then(res => res.json(res))
     .catch(err => res.json(err))
 })
@@ -297,9 +344,21 @@ app.put("/updateRepresentative/:id", (req,res) => {
         restaurant_image: req.body.restaurant_image,
         address: req.body.address,
         email: req.body.email,
-        password: req.body.password,
+        password: req.body.password
     })
     .then(category => res.json(category))
+    .catch(err => res.json(err))
+})
+
+//Update Reservation
+app.put("/updateReservation/:id", (req,res) => {
+    const id = req.params.id
+    RepresentativeModel.findByIdAndUpdate({_id:id},{
+        date: req.body.date,
+        time: req.body.time,
+        visitors: req.body.visitors
+    })
+    .then(reservation => res.json(reservation))
     .catch(err => res.json(err))
 })
 

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import restaurantImg from "../../assets/restaurant-image.jpg";
+import allDishesImg from "../../assets/alldishes.jpg";
 import CustomerBar from "../../components/CustomerBar";
 import {
   getAllCategoriesByRepId,
@@ -40,7 +40,7 @@ function RestaurantMenuPage() {
         <div className="flex flex-row justify-center items-center">
           <div className="card-container">
             <Link onClick={reset} to="" className="card">
-              <img className="card-img mb-2" src=""></img>
+              <img className="card-img mb-2" src={allDishesImg}></img>
               <p className="card-title items-center justify-center my-2">All</p>
             </Link>
             {categories.map((category) => {
@@ -75,18 +75,18 @@ function RestaurantMenuPage() {
                   //checks to see if category id is null if it is all dishes will show if not, the dishes will be filtered.
                   return (
                     <>
-                      <Link to="/restaurantDishPage" className="card text-cream">
+                      <Link to="#" className="card text-cream">
                         <img
                           className="card-img mb-2"
                           src={`../../../backend/${dish.dish_image}`}
                         ></img>
-                        <p className="card-title items-center justify-center my-2">
+                        <p className="card-title items-center justify-center my-1">
                           {dish.dish_name}
                         </p>
-                        <p className="items-center text-center justify-center">
-                          GHC {dish.price}
+                        <p className="text-lg items-center text-center">
+                          GHC {dish.price}.00
                         </p>
-                        <p className="text-xs text-cream text-center p-2 items-center justify-center">
+                        <p className="text-sm text-cream text-center p-2">
                           {dish.description}
                         </p>
                       </Link>
@@ -96,13 +96,19 @@ function RestaurantMenuPage() {
               : dishbyRepIdAndCatId.map((dish) => {
                   return (
                     <>
-                      <Link to="/restaurantDishPage" className="card">
+                      <Link to="#" className="card text-cream">
                         <img
                           className="card-img mb-2"
                           src={`../../../backend/${dish.dish_image}`}
                         ></img>
-                        <p className="card-title items-center justify-center my-2">
+                        <p className="card-title items-center justify-center my-1">
                           {dish.dish_name}
+                        </p>
+                        <p className="text-lg items-center text-center">
+                          GHC {dish.price}.00
+                        </p>
+                        <p className="text-sm text-cream text-center p-2">
+                          {dish.description}
                         </p>
                       </Link>
                     </>
