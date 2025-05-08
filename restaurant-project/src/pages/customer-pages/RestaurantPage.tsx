@@ -5,19 +5,22 @@ import SideBar from "../../components/SideBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import CustomerBar from "../../components/CustomerBar";
-import { getRepresentativeById } from "../../databaseFunctions";
+import {
+  getRepresentativeById,
+  getAllPromotionsByRepId,
+} from "../../databaseFunctions";
 function RestaurantPage() {
-  const {id} = useParams();
+  const { id } = useParams();
 
   const [promotion_title, setPromotionTitle] = useState<string>();
   const [promotion_image, setPromotionImage] = useState<string>();
   const [description, setDescription] = useState<string>();
 
   const representative = getRepresentativeById(id);
+  const promotions = getAllPromotionsByRepId(id);
   //Image related
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePath, setImagePath] = useState<string>();
-
 
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -43,23 +46,33 @@ function RestaurantPage() {
     }
   };
 
-
   return (
     <>
       <CustomerBar></CustomerBar>
       <h1 className="text-4xl m-5" id="head">
-        Welcome to {representative.restaurant_name}
+        Welcome to {representative.restaurant_name} 
       </h1>
-      <div className="flex flex-col justify-center items-center">
-        <img className="w-96 rounded-md" src={`../../../backend/${representative.restaurant_image}`}></img>
-        <div className="m-4 h-40 w-90 p-5 bg-red-600 rounded-md">
-          <p className="text-center text-3xl">New Fish Dish Released</p>
-          <p className="text-center text-3xl">
-            Enjoy our Yogurt with snacks for cheap
-          </p>
-          <p className="text-center text-3xl">Meals on Fridays are 50% off</p>
-        </div>
-      </div>
+
+      {promotions.map((promotion) => {
+        return (
+          <>
+              <div className="flex flex-col justify-center items-center bg-cream">
+                <div className="m-4 w-[500px] p-5 bg-red-600 rounded-md">
+                  <p className="text-center text-3xl m-4">
+                    {promotion.promotion_title}
+                  </p>
+                  <img
+                    className="w-full aspect-video rounded-md m-4"
+                    src={`../../../backend/${promotion.promotion_image}`}
+                  ></img>
+                  <p className="text-center text-2xl">
+                    {promotion.description}
+                  </p>
+                </div>
+              </div>
+          </>
+        );
+      })}
     </>
   );
 }

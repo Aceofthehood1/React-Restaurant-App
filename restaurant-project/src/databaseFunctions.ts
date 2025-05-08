@@ -1,7 +1,5 @@
-import { integer } from "aws-sdk/clients/cloudfront";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export function getRepresentativeById(id:any){
     const [restaurant_name, setRestaurantName] = useState<string>();
@@ -65,6 +63,19 @@ export function getAllCustomers(){
     }, []);
 
     return customers;
+}
+
+export function getCategory(id:any){
+  const [category,setCategory] = useState<String>();
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/getCategory/"+ id)
+      .then((result) => {console.log(result.data[0]) //data is being picked as an array value
+        setCategory(result.data[0].category_name)
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  return category;
 }
 
 export function getAllCategories(){

@@ -20,8 +20,8 @@ function CustomerHomePage() {
     <>
    <CustomerBar></CustomerBar>
 
-      <p id="gtext" className="text-center text-3xl mt-10">Welcome {customer}</p>
-      <p id="gtext" className="text-center text-xl mt-8">Select which restaurant you would like to view</p>
+      <p className="text-center text-4xl mt-10">Welcome {customer}!</p>
+      <p className="text-center text-2xl mt-8">Select which restaurant you would like to view</p>
 
       <div className="flex flex-col justify-center items-center mt-2">
         <div className="card-container">

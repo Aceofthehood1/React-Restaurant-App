@@ -7,6 +7,7 @@ import {
   getAllDishesByRepId,
   getAllCategoriesByRepIdAndCategoryId,
   getAllDishesByRepIdAndCategoryId,
+  getCategory,
 } from "../../databaseFunctions";
 import { useState } from "react";
 
@@ -16,6 +17,7 @@ function RestaurantMenuPage() {
   const categories = getAllCategoriesByRepId(rid);
   const dishes = getAllDishesByRepId(rid);
   const dishbyRepIdAndCatId = getAllDishesByRepIdAndCategoryId(rid, cid);
+  const categ = getCategory(cid);
 
   const assignCategoryId =
     (id: string) =>
@@ -66,7 +68,7 @@ function RestaurantMenuPage() {
         </div>
 
         <h1 className="text-4xl m-5" id="head">
-          Food
+          Dishes
         </h1>
         <div className="flex flex-row justify-center items-center">
           <div className="card-container">
