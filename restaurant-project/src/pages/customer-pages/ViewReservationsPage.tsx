@@ -35,17 +35,17 @@ function ViewReservationPage() {
           <div className="overflow-x-auto bg-project-green rounded-lg">
           {reservations.length != 0 ? (
               <><table className="divide-y-2 divide-cream border-1 text-sm text-cream">
-              <thead className="text-center text-3xl">
-                <td className="whitespace-nowrap px-8 py-2 font-medium">
+              <thead className="text-center text-lg sm:text-3xl">
+                <td className="whitespace-nowrap px-2 py-2 font-medium sm:px-8">
                   <FontAwesomeIcon icon={faUtensils} /> Restaurant
                 </td>
-                <td className="whitespace-nowrap px-8 py-2 font-medium">
+                <td className="whitespace-nowrap px-2 py-2 font-medium sm:px-8">
                   <FontAwesomeIcon icon={faCalendar} /> Date
                 </td>
-                <td className="whitespace-nowrap px-8 py-2 font-medium">
+                <td className="whitespace-nowrap px-2 py-2 font-medium sm:px-8">
                   <FontAwesomeIcon icon={faClock} /> Time
                 </td>
-                <td className="whitespace-nowrap px-8 py-2 font-medium">
+                <td className="whitespace-nowrap px-2 py-2 font-medium sm:px-8">
                   <FontAwesomeIcon icon={faUserGroup} /> Visitors
                 </td>
               </thead>
@@ -58,7 +58,7 @@ function ViewReservationPage() {
                 });
                 return (
                   <>
-                    <tbody className="divide-y divide-black text-cream text-xl">
+                    <tbody className="divide-y divide-black text-cream text-sm sm:text-xl">
                       <tr className="text-center">
                         <td className="whitespace-nowrap px-4 py-2">
                           {

@@ -24,7 +24,7 @@ function formatToAMPM(time: string): string {
 }
 
 function ViewCustomerReservationsPage() {
-  const rid = sessionStorage.getItem("restaurant_id");
+  const rid = sessionStorage.getItem("rep_id");
   const reservations = getAllReservationsByRepId(rid);
   const customers = getAllCustomers();
   //Issue with fetching categories by representative id
@@ -38,17 +38,17 @@ function ViewCustomerReservationsPage() {
               <>
                 {" "}
                 <table className="divide-y-2 divide-cream border-1 text-sm text-cream">
-                  <thead className="text-center text-3xl">
-                    <td className="whitespace-nowrap px-8 py-2 font-medium">
+                  <thead className="text-center text-lg sm:text-3xl">
+                    <td className="whitespace-nowrap px-2 py-2 font-medium sm:px-8">
                       <FontAwesomeIcon icon={faUser} /> Customer
                     </td>
-                    <td className="whitespace-nowrap px-8 py-2 font-medium">
+                    <td className="whitespace-nowrap px-2 py-2 font-medium sm:px-8 ">
                       <FontAwesomeIcon icon={faCalendar} /> Date
                     </td>
-                    <td className="whitespace-nowrap px-8 py-2 font-medium">
+                    <td className="whitespace-nowrap px-2 py-2 font-medium sm:px-8">
                       <FontAwesomeIcon icon={faClock} /> Time
                     </td>
-                    <td className="whitespace-nowrap px-8 py-2 font-medium">
+                    <td className="whitespace-nowrap px-2 py-2 font-medium sm:px-8">
                       <FontAwesomeIcon icon={faUserGroup} /> Visitors
                     </td>
                   </thead>
@@ -61,7 +61,7 @@ function ViewCustomerReservationsPage() {
                     });
                     return (
                       <>
-                        <tbody className="divide-y divide-black text-cream text-xl">
+                        <tbody className="divide-y divide-black text-cream text-sm sm:text-xl ">
                           <tr className="text-center">
                             <td className="whitespace-nowrap px-4 py-2">
                               {
@@ -94,7 +94,7 @@ function ViewCustomerReservationsPage() {
               </>
             ) : (
               <h1 className="text-4xl m-5 text-cream" id="head">
-                No Reservations
+                No Reservations {reservations}
               </h1>
             )}
           </div>
