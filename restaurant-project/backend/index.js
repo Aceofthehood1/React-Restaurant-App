@@ -321,7 +321,9 @@ async function startServer() {
   const absent = ["MONGODB_URI", "JWT_SECRET"].filter((name) => !process.env[name]);
   if (absent.length) throw new Error(`Missing required environment variables: ${absent.join(", ")}`);
   await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
-  return app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+  return app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server listening on port ${PORT}`);
+});
 }
 if (require.main === module) startServer().catch((error) => { console.error(`Unable to start server: ${error.message}`); process.exit(1); });
 module.exports = { app, startServer };
