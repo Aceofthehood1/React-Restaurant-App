@@ -1,219 +1,97 @@
-import { Link } from "react-router-dom";
-import restaurantImg from "../assets/restaurant-image.jpg";
-import SideBar from "../../components/SideBar";
-import axios from "axios";
+import { FormEvent, useEffect, useState } from "react";
 import dishImg from "../../assets/dish.jpg";
-import { useEffect, useState } from "react";
+import SideBar from "../../components/SideBar";
+import api, { apiErrorMessage, IMAGE_ACCEPT, uploadImage } from "../../api";
+import useImageSelection from "../../useImageSelection";
+
 function AddNewDishPage() {
   const [categories, setCategories] = useState<any[]>([]);
-  const rep_id = sessionStorage.getItem("rep_id");
+  const [dishName, setDishName] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState<number | "">("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { selectedFile, previewUrl, onFileChange, clearImage } = useImageSelection();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/getAllCategoriesByRepId/" + rep_id)
+    api.get("/getAllCategoriesByRepId/" + sessionStorage.getItem("rep_id"))
       .then((result) => setCategories(result.data))
-      .catch((err) => console.log(err));
+      .catch((error) => alert(apiErrorMessage(error, "Categories could not be loaded")));
   }, []);
 
-  const [dish_name, setDishName] = useState<string>();
-  const [dish_image, setDishImage] = useState<string>();
-  const [description, setDescription] = useState<string>();
-  const [category, setCategory] = useState<string>();
-  const [price, setPrice] = useState<number>();
-
-  //Image related
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePath, setImagePath] = useState<string>();
-
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setSelectedFile(event.target.files[0]);
-    }
-  };
-  const onFileUpload = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("image", selectedFile);
-      setDishImage(imagePath);
-      try {
-        const response = await axios.post(
-          "http://localhost:3001/upload",
-          formData
-        );
-        setImagePath(response.data.filePath);
-        setDishImage(response.data.filePath);
-      } catch (error) {
-        console.error("Error uploading file:", error);
-      }
-    }
-  };
-  
-
-  const Submit = (e: { preventDefault: () => void }) => {
-    if (dish_name && description && category && price) {
-      axios
-        .post("http://localhost:3001/createDish", {
-          rep_id,
-          dish_name,
-          dish_image,
-          description,
-          category,
-          price,
-        })
-        .then((result) => console.log(result))
-        .catch((err) => console.log(err));
-      alert("You have added a dish successfully");
-      setDishName(""); //to make the input fields empty after clicking on add dish button
-      setDescription("");
-      setDishImage("");
-      setCategory("");
-      setPrice(0);
-    } else {
-      e.preventDefault(); //to make button not refresh page when its clicked on
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+    if (!dishName || !description || !category || price === "") {
       alert("Please fill in all details to continue");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const dishImage = selectedFile ? await uploadImage(selectedFile) : undefined;
+      await api.post("/createDish", {
+        dish_name: dishName,
+        dish_image: dishImage,
+        description,
+        category,
+        price,
+      });
+      alert("You have added a dish successfully");
+      setDishName("");
+      setDescription("");
+      setCategory("");
+      setPrice("");
+      clearImage();
+    } catch (error) {
+      alert(apiErrorMessage(error, "Dish could not be added"));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <>
-      <SideBar></SideBar>
-      {/*
-  Heads up! 👋
-
-  Plugins:
-    - @tailwindcss/forms
-*/}
-
-      <section className="cream">
+      <SideBar />
+      <section className="cream representative-form-page">
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-          <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
-            <img
-              alt=""
-              src={dishImg}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </aside>
-
-          <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-            <div className="max-w-xl lg:max-w-3xl">
-              <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                Add a new dish
-              </h1>
-
-              <p className="mt-4 leading-relaxed text-gray-500">
-                Here, you add the dishes you want your customers to be able to
-                view on the customer page. Make sure to not leave any fields
-                empty!
-              </p>
-
-              <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+          <aside
+            className="form-page-visual relative lg:order-last lg:col-span-5 xl:col-span-6"
+            aria-hidden="true"
+            style={{ backgroundImage: `url(${dishImg})` }}
+          />
+          <main className="management-form-content lg:col-span-7 xl:col-span-6">
+            <div className="management-form-panel">
+              <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">Add a new dish</h1>
+              <p className="mt-4 leading-relaxed text-gray-600">Add a dish for customers to view on your menu.</p>
+              <form className="mt-8 grid grid-cols-6 gap-6" onSubmit={submit}>
                 <div className="col-span-6">
-                  <label
-                    htmlFor="dish_name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Name of Dish
-                  </label>
-                  <input
-                    id="dish-name"
-                    type="text"
-                    placeholder="Enter the Dishes Name"
-                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={(e) => setDishName(e.target.value)}
-                    value={dish_name}
-                  />
+                  <label htmlFor="dish-name" className="block text-sm font-medium text-gray-700">Name of Dish</label>
+                  <input id="dish-name" type="text" required className="form-field" onChange={(event) => setDishName(event.target.value)} value={dishName} />
                 </div>
-
                 <div className="col-span-6">
-                  <label
-                    htmlFor="dish_name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Dish Description
-                  </label>
-                  <textarea
-                    id="description"
-                    placeholder="Describe the dish"
-                    className="mt-1 w-full h-[100px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={(e) => setDescription(e.target.value)}
-                    value={description}
-                  ></textarea>
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700">Dish Description</label>
+                  <textarea id="description" required className="form-field min-h-[100px]" onChange={(event) => setDescription(event.target.value)} value={description} />
                 </div>
-
                 <div className="col-span-6">
-                  <label
-                    htmlFor="dish_image"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    {" "}
-                    Upload Image of Dish{" "}
-                  </label>
-                  <input
-                    id="dish-image"
-                    type="file"
-                    accept="image/*"
-                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={onFileChange}
-                  />
-                  <button 
-                  className="text-cream inline-block shrink-0 mt-2 rounded-md border green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
-                  onClick={onFileUpload}>Save Image</button>
+                  <label htmlFor="dish-image" className="block text-sm font-medium text-gray-700">Dish image</label>
+                  <input id="dish-image" type="file" accept={IMAGE_ACCEPT} className="form-field file-input-field" onChange={onFileChange} />
+                  {previewUrl && <img className="image-preview" src={previewUrl} alt="Selected dish preview" />}
+                  <p className="mt-2 text-sm text-gray-600">The selected image is uploaded when you add the dish.</p>
                 </div>
-
                 <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="category"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    {" "}
-                    Category{" "}
-                  </label>
-
-                  <select
-                    id="category"
-                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={(e) => setCategory(e.target.value)}
-                    value={category}
-                  >
+                  <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
+                  <select id="category" required className="form-field" onChange={(event) => setCategory(event.target.value)} value={category}>
                     <option value="">Select Dish Category</option>
-                    {categories.map((category) => {
-                      return (
-                        <>
-                          <option value={category._id}>
-                            {category.category_name}
-                          </option>
-                        </>
-                      );
-                    })}
+                    {categories.map((item) => <option key={item._id} value={item._id}>{item.category_name}</option>)}
                   </select>
                 </div>
-
                 <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="price"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Price
-                  </label>
-
-                  <input
-                    id="price"
-                    type="number"
-                    placeholder="Price"
-                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={(e) => setPrice(parseFloat(e.target.value))}
-                    value={price}
-                  />
+                  <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
+                  <input id="price" type="number" min="0" step="0.01" required className="form-field" onChange={(event) => setPrice(event.target.value === "" ? "" : Number(event.target.value))} value={price} />
                 </div>
-
-                <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button
-                    className="text-cream inline-block shrink-0 rounded-md border green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
-                    onClick={Submit}
-                  >
-                    Add Dish
-                  </button>
+                <div className="col-span-6">
+                  <button type="submit" disabled={isSubmitting} className="primary-action">{isSubmitting ? "Adding dish..." : "Add Dish"}</button>
                 </div>
               </form>
             </div>

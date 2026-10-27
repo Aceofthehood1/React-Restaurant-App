@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios, { Axios } from "axios";
+import api, { apiErrorMessage } from "../../api";
 import { faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HeaderBar from "../../components/HeaderBar";
@@ -13,21 +13,22 @@ function CustomerSignUpPage() {
   const [password, setPassword] = useState<string>();
   const navigate = useNavigate()
 
-  const Submit = (e: { preventDefault: () => void }) => {
+  const Submit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     if (first_name && surname && email && password && email.includes("@")) {
-      axios
-        .post("http://localhost:3001/createCustomer", {
+      try {
+        await api.post("/createCustomer", {
           first_name,
           surname,
           email,
           password,
-        })
-        .then((result) => console.log(result))
-        .catch((err) => console.log(err));
-      alert("You have created an account successfully");
-      navigate('/customerSignIn')
+        });
+        alert("You have created an account successfully");
+        navigate('/customerSignIn');
+      } catch (error) {
+        alert(apiErrorMessage(error, "Account creation failed"));
+      }
     } else {
-      e.preventDefault(); //to make button not refresh page when its clicked on
       alert("Please fill in all details to continue");
     }
   };

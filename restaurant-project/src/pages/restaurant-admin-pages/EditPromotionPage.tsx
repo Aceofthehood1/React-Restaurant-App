@@ -1,167 +1,88 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import specialImg from "../../assets/special.jpeg";
 import SideBar from "../../components/SideBar";
-import axios from "axios";
-import { useState, useEffect } from "react";
-function EditPromotionPage() {
-  const {id} = useParams()
-  const [promotion_title, setPromotionTitle] = useState<string>();
-  const [promotion_image, setPromotionImage] = useState<string>();
-  const [description, setDescription] = useState<string>();
+import api, { apiErrorMessage, imageUrl, IMAGE_ACCEPT, uploadImage } from "../../api";
+import useImageSelection from "../../useImageSelection";
 
-  //Image related
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePath, setImagePath] = useState<string>();
-  const navigate = useNavigate()
+function EditPromotionPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [promotionTitle, setPromotionTitle] = useState("");
+  const [promotionImage, setPromotionImage] = useState("");
+  const [description, setDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { selectedFile, previewUrl, onFileChange } = useImageSelection();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/getPromotion/"+ id)
-      .then((result) => {console.log(result.data)
-        setPromotionTitle(result.data.promotion_title)
-        setPromotionImage(result.data.promotion_image)
-        setDescription(result.data.description)
+    api.get("/getPromotion/" + id)
+      .then((result) => {
+        setPromotionTitle(result.data.promotion_title || "");
+        setPromotionImage(result.data.promotion_image || "");
+        setDescription(result.data.description || "");
       })
-      .catch((err) => console.log(err));
-  }, []);
+      .catch((error) => alert(apiErrorMessage(error, "Promotion could not be loaded")));
+  }, [id]);
 
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setSelectedFile(event.target.files[0]);
-    }
-  };
-  const onFileUpload = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("image", selectedFile);
-      setPromotionImage(imagePath);
-      try {
-        const response = await axios.post(
-          "http://localhost:3001/upload",
-          formData
-        );
-        setImagePath(response.data.filePath);
-        setPromotionImage(response.data.filePath);
-      } catch (error) {
-        console.error("Error uploading file:", error);
-      }
-    }
-  };
-
-  const Update = (e: { preventDefault: () => void }) =>{
-    e.preventDefault()
-    if (promotion_title && description) {
-      axios
-        .put("http://localhost:3001/updatePromotion/"+id, {
-          promotion_title,
-          promotion_image,
-          description,
-        })
-        .then((result) => {console.log(result)
-          navigate('/promotionListPage')
-        } )
-        .catch((err) => console.log(err));
-      alert("You have successfully updated the promotion");
-    } else {
-      e.preventDefault(); //to make button not refresh page when its clicked on
+  const update = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+    if (!promotionTitle || !description) {
       alert("Please fill in all details to continue");
+      return;
     }
-  }
+    setIsSubmitting(true);
+    try {
+      const finalImage = selectedFile ? await uploadImage(selectedFile) : promotionImage;
+      await api.put("/updatePromotion/" + id, { promotion_title: promotionTitle, promotion_image: finalImage, description });
+      alert("You have successfully updated the promotion");
+      navigate("/promotionListPage");
+    } catch (error) {
+      alert(apiErrorMessage(error, "Promotion could not be updated"));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const displayedImage = previewUrl || imageUrl(promotionImage);
+
   return (
     <>
-        <SideBar></SideBar>
-
-      <section className="cream">
+      <SideBar />
+      <section className="cream representative-form-page">
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-          <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
-            <img
-              alt=""
-              src={specialImg}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </aside>
-
-          <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-            <div className="max-w-xl lg:max-w-3xl">
-              <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                  Edit Selected Promotion
-              </h1>
-
-              <p className="mt-4 leading-relaxed text-gray-500">
-                Here, you can make changes to the selcted Promotion and this will be relected on the main page. Make sure to not leave any fields empty!
-              </p>
-
-              <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+          <aside
+            className="form-page-visual relative lg:order-last lg:col-span-5 xl:col-span-6"
+            aria-hidden="true"
+            style={{ backgroundImage: `url(${specialImg})` }}
+          />
+          <main className="management-form-content lg:col-span-7 xl:col-span-6">
+            <div className="management-form-panel">
+              <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">Edit Selected Promotion</h1>
+              <p className="mt-4 leading-relaxed text-gray-600">Change the promotion details or choose a replacement image.</p>
+              <form className="mt-8 grid grid-cols-6 gap-6" onSubmit={update}>
                 <div className="col-span-6">
-                  <label
-                    htmlFor="dish_name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Name of Promotion
-                  </label>
-                  <input
-                    id="promotion-name"
-                    type="text"
-                    placeholder="Enter the Promotion Name"
-                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={(e) => setPromotionTitle(e.target.value)}
-                    value={promotion_title}
-                  />
+                  <label htmlFor="promotion-name" className="block text-sm font-medium text-gray-700">Name of Promotion</label>
+                  <input id="promotion-name" type="text" required className="form-field" onChange={(event) => setPromotionTitle(event.target.value)} value={promotionTitle} />
                 </div>
-
                 <div className="col-span-6">
-                  <label
-                    htmlFor="promotion-description"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Promotion Description
-                  </label>
-                  <textarea
-                    id="description"
-                    placeholder="Describe the Promotion"
-                    className="mt-1 w-full h-[100px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={(e) => setDescription(e.target.value)}
-                    value={description}
-                  ></textarea>
+                  <label htmlFor="promotion-description" className="block text-sm font-medium text-gray-700">Promotion Description</label>
+                  <textarea id="promotion-description" required className="form-field min-h-[100px]" onChange={(event) => setDescription(event.target.value)} value={description} />
                 </div>
-
                 <div className="col-span-6">
-                  <label
-                    htmlFor="promotion_image"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    {" "}
-                    Upload Image for the Promotion{" "}
-                  </label>
-                  <input
-                    id="promotion-image"
-                    type="file"
-                    accept="image/*"
-                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={onFileChange}
-                  />
-                   <img src={`../../../backend/${promotion_image}`}></img>
-                  <button 
-                  className="text-cream inline-block shrink-0 mt-2 rounded-md border green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
-                  onClick={onFileUpload}>Save Image</button>
+                  <label htmlFor="promotion-image" className="block text-sm font-medium text-gray-700">Replace promotion image</label>
+                  <input id="promotion-image" type="file" accept={IMAGE_ACCEPT} className="form-field file-input-field" onChange={onFileChange} />
+                  {displayedImage && <img className="image-preview" src={displayedImage} alt={previewUrl ? "Selected promotion preview" : "Current promotion"} />}
+                  <p className="mt-2 text-sm text-gray-600">Leave this empty to keep the current image.</p>
                 </div>
-
-                <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button
-                    className="text-cream inline-block shrink-0 rounded-md border green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
-                    onClick={Update}
-                  >
-                    Save
-                  </button>
+                <div className="col-span-6">
+                  <button type="submit" disabled={isSubmitting} className="primary-action">{isSubmitting ? "Saving promotion..." : "Save"}</button>
                 </div>
               </form>
             </div>
           </main>
         </div>
       </section>
-
-      
     </>
   );
 }

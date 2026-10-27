@@ -3,21 +3,21 @@ import SideBar from "../../components/SideBar";
 import { useEffect, useState } from "react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import api from "../../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function DishListPage() {
   const [dishes, setDishes] = useState<any[]>([]);
   const rep_id = sessionStorage.getItem("rep_id");
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/getAllDishesByRepId/" + rep_id)
+    api
+      .get("/getAllDishesByRepId/" + rep_id)
       .then((result) => setDishes(result.data))
       .catch((err) => console.log(err));
   }, []);
 
   const handleDelete = (id: any) => {
-    axios
-      .delete("http://localhost:3001/deleteDish/" + id)
+    api
+      .delete("/deleteDish/" + id)
       .then((res) => {
         console.log(res);
         window.location.reload();
@@ -29,21 +29,19 @@ function DishListPage() {
     <>
       <SideBar></SideBar>
 
-      <div className="flex flex-col items-center justify-center mb-5 mt-20 ">
-          <div className="overflow-x-auto bg-project-green rounded-lg">
-            <table className="divide-y-2 divide-cream border-1 text-sm">
-              <thead className="">
+      <div className="flex w-full flex-col items-center justify-center mb-5 mt-20 px-4">
+          <div className="table-scroll management-table-scroll bg-project-green rounded-lg">
+            <table className="management-table divide-y-2 divide-cream border-1 text-sm">
+              <thead>
                 <tr>
-                  <p className="whitespace-nowrap px-4 py-2 font-medium text-cream text-lg lg:w-[500px]">
+                  <th colSpan={3} className="whitespace-nowrap px-4 py-2 font-medium text-cream text-lg">
                     Name of Dish
-                  </p>
+                  </th>
                 </tr>
               </thead>
-              {dishes.map((dish) => {
-                return (
-                  <>
-                    <tbody className="divide-y divide-black">
-                      <tr>
+              <tbody className="divide-y divide-black">
+                {dishes.map((dish) => (
+                      <tr key={dish._id}>
                         <td className="whitespace-nowrap px-4 py-2 font-medium text-cream">
                           {dish.dish_name}
                         </td>
@@ -66,14 +64,12 @@ function DishListPage() {
                           </button>
                         </td>
                       </tr>
-                    </tbody>
-                  </>
-                );
-              })}
+                ))}
+              </tbody>
             </table>
           </div>
         </div>
-    
+
     </>
   );
 }

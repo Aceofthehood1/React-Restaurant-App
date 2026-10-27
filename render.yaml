@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: react-restaurant-api
+    runtime: node
+    rootDir: restaurant-project/backend
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api, { apiErrorMessage, saveSession } from "../../api";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderBar from "../../components/HeaderBar";
@@ -10,24 +10,16 @@ function CustomerSignInPage() {
 
   const navigate = useNavigate();
 
-  const Check = (e: { preventDefault: () => any }) => {
+  const Check = async (e: { preventDefault: () => any }) => {
     e.preventDefault();
     if (email && password) {
-      axios
-        .post("http://localhost:3001/loginCustomer", { email, password })
-        .then((result) => {
-          console.log(result);
-          if(result.data[0] == "Logged in Successfully") {
-            //from backend the result value is taken and checked to see if user was able to login successfully if it was possible they are redirected to a different page
-            sessionStorage.setItem('customer_id',result.data[1])  //Creates session storage and sets value to representatives id
-            navigate("/customerHomePage");
-          }else if(result.data == "The password is incorrect"){
-            alert("The password is incorrect")
-          }else {
-            alert("Email does not exist");
-          }
-        })
-        .catch((err) => console.log(err));
+      try {
+        const result = await api.post("/loginCustomer", { email, password });
+        saveSession(result.data);
+        navigate("/customerHomePage");
+      } catch (error) {
+        alert(apiErrorMessage(error, "Sign in failed"));
+      }
     } else {
       e.preventDefault();
       alert("Do not leave any fields empty");

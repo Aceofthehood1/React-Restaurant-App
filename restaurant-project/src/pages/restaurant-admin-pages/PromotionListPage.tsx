@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import restaurantImg from "../../assets/restaurant-image.jpg";
 import SideBar from "../../components/SideBar";
-import axios from "axios";
+import api from "../../api";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -10,15 +9,15 @@ function PromotionListPage() {
   const rep_id = sessionStorage.getItem('rep_id');
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/getAllPromotionsByRepId/" + rep_id)
+    api
+      .get("/getAllPromotionsByRepId/" + rep_id)
       .then((result) => setPromotions(result.data))
       .catch((err) => console.log(err));
   }, []);
 
   const handleDelete = (id: any) => {
-    axios
-      .delete("http://localhost:3001/deletePromotion/" + id)
+    api
+      .delete("/deletePromotion/" + id)
       .then((res) => {
         console.log(res);
         window.location.reload();
@@ -29,21 +28,19 @@ function PromotionListPage() {
   return (
     <>
         <SideBar></SideBar>
-      <div className="flex flex-col items-center justify-center mb-5 mt-20">
-          <div className="overflow-x-auto bg-project-green rounded-lg">
-            <table className="divide-y-2 divide-cream border-1 text-sm">
-              <thead className="">
+      <div className="flex w-full flex-col items-center justify-center mb-5 mt-20 px-4">
+          <div className="table-scroll management-table-scroll bg-project-green rounded-lg">
+            <table className="management-table divide-y-2 divide-cream border-1 text-sm">
+              <thead>
                 <tr>
-                  <p className="whitespace-nowrap px-4 py-2 font-medium text-cream text-lg lg:w-[500px]">
-                    Category Name
-                  </p>
+                  <th colSpan={3} className="whitespace-nowrap px-4 py-2 font-medium text-cream text-lg">
+                    Promotion Name
+                  </th>
                 </tr>
               </thead>
-              {promotions.map((promotion) => {
-                return (
-                  <>
-                    <tbody className="divide-y divide-black">
-                      <tr>
+              <tbody className="divide-y divide-black">
+                {promotions.map((promotion) => (
+                      <tr key={promotion._id}>
                         <td className="whitespace-nowrap px-4 py-2 font-medium text-cream">
                           {promotion.promotion_title}
                         </td>
@@ -66,10 +63,8 @@ function PromotionListPage() {
                           </button>
                         </td>
                       </tr>
-                    </tbody>
-                  </>
-                );
-              })}
+                ))}
+              </tbody>
             </table>
           </div>
         </div>
