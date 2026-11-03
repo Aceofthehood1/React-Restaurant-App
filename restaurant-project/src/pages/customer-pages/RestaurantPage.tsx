@@ -1,78 +1,46 @@
-import { Link, useParams } from "react-router-dom";
-import NavBar from "../../components/NavBar";
+import { useParams } from "react-router-dom";
 import restaurantImg from "../../assets/restaurant-image.jpg";
-import SideBar from "../../components/SideBar";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import specialImg from "../../assets/special.jpeg";
+import { imageUrl } from "../../api";
 import CustomerBar from "../../components/CustomerBar";
-import {
-  getRepresentativeById,
-  getAllPromotionsByRepId,
-} from "../../databaseFunctions";
+import ImageWithFallback from "../../components/ImageWithFallback";
+import { getAllPromotionsByRepId, getRepresentativeById } from "../../databaseFunctions";
+
 function RestaurantPage() {
   const { id } = useParams();
-
-  const [promotion_title, setPromotionTitle] = useState<string>();
-  const [promotion_image, setPromotionImage] = useState<string>();
-  const [description, setDescription] = useState<string>();
-
   const representative = getRepresentativeById(id);
   const promotions = getAllPromotionsByRepId(id);
-  //Image related
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePath, setImagePath] = useState<string>();
-
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setSelectedFile(event.target.files[0]);
-    }
-  };
-  const onFileUpload = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("image", selectedFile);
-      setPromotionImage(imagePath);
-      try {
-        const response = await axios.post(
-          "http://localhost:3001/upload",
-          formData
-        );
-        setImagePath(response.data.filePath);
-        setPromotionImage(response.data.filePath);
-      } catch (error) {
-        console.error("Error uploading file:", error);
-      }
-    }
-  };
 
   return (
     <>
-      <CustomerBar></CustomerBar>
-      <h1 className="text-4xl m-5" id="head">
-        Welcome to {representative.restaurant_name} 
-      </h1>
+      <CustomerBar />
+      <main className="min-h-screen w-full bg-cream px-4 py-10 text-[#10243d] sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <h1 className="mb-8 text-center text-3xl font-semibold sm:text-4xl">Welcome to {representative.restaurant_name}</h1>
+          <div className="mx-auto max-w-3xl overflow-hidden rounded-lg bg-project-green shadow-md">
+            <ImageWithFallback className="block h-64 w-full object-cover object-center sm:h-80" src={imageUrl(representative.restaurant_image)} fallbackSrc={restaurantImg} alt={`${representative.restaurant_name || "Restaurant"} profile`} />
+          </div>
 
-      {promotions.map((promotion) => {
-        return (
-          <>
-              <div className="flex flex-col justify-center items-center bg-cream">
-                <div className="m-4 w-[500px] p-5 bg-red-600 rounded-md">
-                  <p className="text-center text-3xl m-4">
-                    {promotion.promotion_title}
-                  </p>
-                  <img
-                    className="w-full aspect-video rounded-md m-4"
-                    src={`../../../backend/${promotion.promotion_image}`}
-                  ></img>
-                  <p className="text-center text-2xl">
-                    {promotion.description}
-                  </p>
-                </div>
+          {promotions.length > 0 && (
+            <section className="mt-14" aria-labelledby="promotions-heading">
+              <h2 id="promotions-heading" className="mb-8 text-center text-3xl font-semibold sm:text-4xl">Promotions</h2>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {promotions.map((promotion) => (
+                  <article key={promotion._id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg bg-project-green text-cream shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
+                    <div className="h-56 w-full overflow-hidden bg-project-green sm:h-60">
+                      <ImageWithFallback className="block h-full w-full object-cover object-center" src={imageUrl(promotion.promotion_image)} fallbackSrc={specialImg} alt={promotion.promotion_title} />
+                    </div>
+                    <div className="flex flex-1 flex-col px-5 py-5 text-center">
+                      <h3 className="break-words text-xl font-semibold leading-snug">{promotion.promotion_title}</h3>
+                      {promotion.description && <p className="mt-4 break-words text-sm leading-relaxed sm:text-base">{promotion.description}</p>}
+                    </div>
+                  </article>
+                ))}
               </div>
-          </>
-        );
-      })}
+            </section>
+          )}
+        </div>
+      </main>
     </>
   );
 }

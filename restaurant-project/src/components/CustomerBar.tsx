@@ -1,10 +1,11 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faKitchenSet, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faKitchenSet } from "@fortawesome/free-solid-svg-icons";
 import { faUtensils } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarXmark } from "@fortawesome/free-solid-svg-icons";
+import { clearSession } from "../api";
 
 
 
@@ -32,12 +33,12 @@ function CustomerBar() {
   };
 
   const code = sessionStorage.getItem('restaurant_id'); // variable to store restaurant_id so the home button will make user see the restaurant based on id stored
-  const logOut = (e: { preventDefault: () => any }) => {
-    sessionStorage.removeItem("customer_id");
+  const logOut = () => {
+    clearSession();
   };
   return (
     <>
-      <div className="navbar">
+      <div className="navbar app-navbar">
         <div className="navbar-start">
           {location.pathname != "/customerHomePage"? <details className="dropdown">
             <summary
@@ -109,12 +110,12 @@ function CustomerBar() {
             </ul>
           </details> :""
           }
-          
+
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost text-lg text-cream sm:text-2xl">
+          <span className="app-navbar-title">
             {getHeaderTitle()}
-          </a>
+          </span>
         </div>
         <div className="navbar-end">
           <Link

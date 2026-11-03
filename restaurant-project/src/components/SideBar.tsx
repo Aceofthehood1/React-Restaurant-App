@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendar,
   faCircleUser,
-  faPlus,
   faUtensils,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +11,7 @@ import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 import { faBowlFood } from "@fortawesome/free-solid-svg-icons";
 import { faList } from "@fortawesome/free-solid-svg-icons";
 import { faRectangleAd } from "@fortawesome/free-solid-svg-icons";
+import { clearSession } from "../api";
 
 function SideBar() {
   const location = useLocation();
@@ -50,12 +50,12 @@ function SideBar() {
     }
   };
 
-  const logOut = (e: { preventDefault: () => any }) => {
-    sessionStorage.removeItem("rep_id");
+  const logOut = () => {
+    clearSession();
   };
   return (
     <>
-      <div className="navbar">
+      <div className="navbar app-navbar">
         <div className="navbar-start">
           <details className="dropdown">
             <summary
@@ -140,6 +140,8 @@ function SideBar() {
                   {" "}
                   <FontAwesomeIcon icon={faPencil} /> Edit Promotion
                 </Link>
+              </li>
+              <li>
                 <Link
                   to="/viewCustomerReservationsPage"
                   className="rounded-md px-3 py-2 text-lg font-medium"
@@ -152,9 +154,9 @@ function SideBar() {
           </details>
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost text-lg text-cream sm:text-2xl">
+          <span className="app-navbar-title">
             {getHeaderTitle()}
-          </a>
+          </span>
         </div>
         <div className="navbar-end">
           <Link

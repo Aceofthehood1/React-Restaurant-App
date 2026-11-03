@@ -1,6 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { MongoClient } from "mongodb";
-import axios from "axios";
+import api, { apiErrorMessage, saveSession } from "../../api";
 import { useState, useEffect } from "react";
 import { faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,25 +11,16 @@ function RestaurantSignInPage() {
 
   const navigate = useNavigate();
 
-  const Check = (e: { preventDefault: () => any }) => {
+  const Check = async (e: { preventDefault: () => any }) => {
     e.preventDefault();
     if (email && password) {
-      axios
-        .post("http://localhost:3001/loginRepresentative", { email, password })
-        .then((result) => {
-          console.log(result);
-          if (result.data[0] == "Logged in Successfully") {
-            //from backend the result value is taken and checked to see if user was able to login successfully if it was possible they are redirected to a different page
-            sessionStorage.setItem("rep_id", result.data[1]); //Creates session storage and sets value to representatives id
-            navigate("/restaurantAdminPage");
-          } else if (result.data == "The password is incorrect") {
-            alert("The password is incorrect");
-            sessionStorage.removeItem("rep_id");
-          } else {
-            alert("Email does not exist");
-          }
-        })
-        .catch((err) => console.log(err));
+      try {
+        const result = await api.post("/loginRepresentative", { email, password });
+        saveSession(result.data);
+        navigate("/restaurantAdminPage");
+      } catch (error) {
+        alert(apiErrorMessage(error, "Sign in failed"));
+      }
     } else {
       e.preventDefault();
       alert("Do not leave any fields empty");

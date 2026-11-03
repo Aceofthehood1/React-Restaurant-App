@@ -1,145 +1,76 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import menuImg from "../../assets/menu.png";
 import SideBar from "../../components/SideBar";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import api, { apiErrorMessage, imageUrl, IMAGE_ACCEPT, uploadImage } from "../../api";
+import useImageSelection from "../../useImageSelection";
+
 function EditCategoryPage() {
   const { id } = useParams();
-  const [category_name, setCategoryName] = useState<string>();
-  const [category_image, setCategoryImage] = useState<string>();
   const navigate = useNavigate();
-
-  //Image related
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePath, setImagePath] = useState<string>();
+  const [categoryName, setCategoryName] = useState("");
+  const [categoryImage, setCategoryImage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { selectedFile, previewUrl, onFileChange } = useImageSelection();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/getCategory/" + id)
+    api.get("/getCategory/" + id)
       .then((result) => {
-        console.log(result.data);
-        setCategoryName(result.data.category_name);
-        setCategoryImage(result.data.category_image);
+        setCategoryName(result.data.category_name || "");
+        setCategoryImage(result.data.category_image || "");
       })
-      .catch((err) => console.log(err));
-  }, []);
+      .catch((error) => alert(apiErrorMessage(error, "Category could not be loaded")));
+  }, [id]);
 
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setSelectedFile(event.target.files[0]);
+  const update = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+    if (!categoryName) {
+      alert("Please enter a category name to continue");
+      return;
     }
-  };
-  const onFileUpload = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("image", selectedFile);
-      setCategoryImage(imagePath);
-      try {
-        const response = await axios.post(
-          "http://localhost:3001/upload",
-          formData
-        );
-        setImagePath(response.data.filePath);
-        setCategoryImage(response.data.filePath)
-      } catch (error) {
-        console.error("Error uploading file:", error);
-      }
-    }
-  };
-
-  const Update = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (category_name) {
-      axios
-        .put("http://localhost:3001/updateCategory/" + id, {
-          category_name,
-          category_image
-        })
-        .then((result) => {
-          console.log(result);
-          navigate("/categoryListPage");
-        })
-        .catch((err) => console.log(err));
+    setIsSubmitting(true);
+    try {
+      const finalImage = selectedFile ? await uploadImage(selectedFile) : categoryImage;
+      await api.put("/updateCategory/" + id, { category_name: categoryName, category_image: finalImage });
       alert("You have successfully updated the category");
-    } else {
-      e.preventDefault(); //to make button not refresh page when its clicked on
-      alert("Please fill in all details to continue");
+      navigate("/categoryListPage");
+    } catch (error) {
+      alert(apiErrorMessage(error, "Category could not be updated"));
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  const displayedImage = previewUrl || imageUrl(categoryImage);
 
   return (
     <>
-      <SideBar></SideBar>
-
-      <section className="bg-cream">
+      <SideBar />
+      <section className="cream representative-form-page">
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-          <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
-            <img
-              alt=""
-              src={menuImg}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </aside>
-
-          <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-            <div className="max-w-xl lg:max-w-3xl">
-              <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                Edit Selected Category
-              </h1>
-
-              <p className="mt-4 leading-relaxed text-gray-500">
-                Here, you can edit the categories incase you want to make
-                changes to either the image or the category name. Make sure to
-                not leave any fields empty!
-              </p>
-
-              <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+          <aside
+            className="form-page-visual relative lg:order-last lg:col-span-5 xl:col-span-6"
+            aria-hidden="true"
+            style={{ backgroundImage: `url(${menuImg})` }}
+          />
+          <main className="management-form-content lg:col-span-7 xl:col-span-6">
+            <div className="management-form-panel">
+              <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">Edit Selected Category</h1>
+              <p className="mt-4 leading-relaxed text-gray-600">Change the category name or choose a replacement image.</p>
+              <form className="mt-8 grid grid-cols-6 gap-6" onSubmit={update}>
                 <div className="col-span-6">
-                  <label
-                    htmlFor="dish_name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Name of Category
-                  </label>
-                  <input
-                    id="category-name"
-                    type="text"
-                    placeholder="Enter the Categories Name"
-                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={(e) => setCategoryName(e.target.value)}
-                    value={category_name}
-                  />
+                  <label htmlFor="category-name" className="block text-sm font-medium text-gray-700">Name of Category</label>
+                  <input id="category-name" type="text" required className="form-field" onChange={(event) => setCategoryName(event.target.value)} value={categoryName} />
                 </div>
-
                 <div className="col-span-6">
-                  <label
-                    htmlFor="dish_image"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    {" "}
-                    Upload Image of Category{" "}
-                  </label>
-                  <input
-                    id="category-image"
-                    type="file"
-                    accept="image/*"
-                    className="mt-1 w-full h-[40px] rounded-md bg-white text-sm text-gray-700 shadow-sm p-2 border-2 border-black"
-                    onChange={onFileChange}
-                  />
-                  <img src={`../../../backend/${category_image}`}></img>
-                  <button 
-                  className="text-cream inline-block shrink-0 mt-2 rounded-md border green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
-                  onClick={onFileUpload}>Save Image</button>
+                  <label htmlFor="category-image" className="block text-sm font-medium text-gray-700">Replace category image</label>
+                  <input id="category-image" type="file" accept={IMAGE_ACCEPT} className="form-field file-input-field" onChange={onFileChange} />
+                  {displayedImage && <img className="image-preview" src={displayedImage} alt={previewUrl ? "Selected category preview" : "Current category"} />}
+                  <p className="mt-2 text-sm text-gray-600">Leave this empty to keep the current image.</p>
                 </div>
-
-                <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button
-                    className="text-cream inline-block shrink-0 rounded-md border bg-project-green px-12 py-3 text-sm font-medium transition hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus:ring"
-                    onClick={Update}
-                  >
-                    Save
-                  </button>
+                <div className="col-span-6">
+                  <button type="submit" disabled={isSubmitting} className="primary-action">{isSubmitting ? "Saving category..." : "Save"}</button>
                 </div>
               </form>
             </div>
